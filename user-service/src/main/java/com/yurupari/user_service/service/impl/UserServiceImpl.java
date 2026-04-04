@@ -22,9 +22,9 @@ public class UserServiceImpl implements UserService {
     public UserDto createUser(UserDto userDto) {
         log.info("Creating user: user={}", userDto);
 
-        final User createdUser = userMapper.toEntity(userDto);
+        final var createdUser = userMapper.toEntity(userDto);
 
-        final User savedUser = userRepository.save(createdUser);
+        final var savedUser = userRepository.save(createdUser);
 
         return userMapper.toDto(savedUser);
     }
