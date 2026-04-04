@@ -42,7 +42,7 @@ class UserServiceApplicationTests {
 
 	@Test
 	void createUser() throws Exception {
-		var request = jsonTestUtils.loadRequest("model/create_user_v1.json");
+		var request = jsonTestUtils.loadRequest("model/dto/create_user_dto_v1.json");
 
 		mockMvc.perform(
 				post("/api/v1/user")
