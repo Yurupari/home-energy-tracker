@@ -1,5 +1,6 @@
 package com.yurupari.user_service.service.impl;
 
+import com.yurupari.user_service.exception.UserNotFoundException;
 import com.yurupari.user_service.model.dto.UserDto;
 import com.yurupari.user_service.model.entity.User;
 import com.yurupari.user_service.model.mapper.UserMapper;
@@ -27,5 +28,26 @@ public class UserServiceImpl implements UserService {
         final var savedUser = userRepository.save(createdUser);
 
         return userMapper.toDto(savedUser);
+    }
+
+    @Override
+    public UserDto getUserById(Long id) {
+        log.info("Getting user: id={}", id);
+
+        return userRepository.findById(id)
+                .map(userMapper::toDto)
+                .orElseThrow(() -> new UserNotFoundException(id));
+    }
+
+    @Override
+    public void updateUser(Long id, UserDto userDto) {
+        log.info("Updating user: id={}, user={}", id, userDto);
+
+        var existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+
+        userMapper.updateEntityFromDto(userDto, existingUser);
+
+        userRepository.save(existingUser);
     }
 }

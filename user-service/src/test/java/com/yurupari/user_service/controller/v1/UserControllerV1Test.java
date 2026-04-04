@@ -11,8 +11,11 @@ import java.io.IOException;
 
 import static com.yurupari.user_service.constants.TestConstants.CREATE_USER_DTO_JSON;
 import static com.yurupari.user_service.constants.TestConstants.SAVED_USER_DTO_V1_JSON;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class UserControllerV1Test extends BaseUnitTest {
@@ -33,5 +36,25 @@ class UserControllerV1Test extends BaseUnitTest {
         var response = userService.createUser(createUserDto);
 
         assertNotNull(response);
+    }
+
+    @Test
+    void getUserById() throws IOException {
+        var savedUserDto = jsonTestUtils.loadObject(SAVED_USER_DTO_V1_JSON, UserDto.class);
+
+        when(userService.getUserById(any())).thenReturn(savedUserDto);
+
+        var response = userControllerV1.getUserById(1L);
+
+        assertNotNull(response);
+    }
+
+    @Test
+    void updateUser() throws IOException {
+        var updateUserDto = jsonTestUtils.loadObject(SAVED_USER_DTO_V1_JSON, UserDto.class);
+
+        assertDoesNotThrow(() -> userControllerV1.updateUser(1L, updateUserDto));
+
+        verify(userService, times(1)).updateUser(1L, updateUserDto);
     }
 }
