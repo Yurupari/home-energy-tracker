@@ -7,11 +7,9 @@ import com.yurupari.user_service.model.mapper.UserMapper;
 import com.yurupari.user_service.repository.UserRepository;
 import com.yurupari.user_service.service.UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
@@ -21,8 +19,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto createUser(UserDto userDto) {
-        log.info("Creating user: user={}", userDto);
-
         final var createdUser = userMapper.toEntity(userDto);
 
         final var savedUser = userRepository.save(createdUser);
@@ -32,8 +28,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(Long id) {
-        log.info("Getting user: id={}", id);
-
         return userRepository.findById(id)
                 .filter(u -> Status.ACTIVE.equals(u.getStatus()))
                 .map(userMapper::toDto)
@@ -42,8 +36,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(Long id, UserDto userDto) {
-        log.info("Updating user: id={}, user={}", id, userDto);
-
         var existingUser = userRepository.findById(id)
                 .filter(u -> Status.ACTIVE.equals(u.getStatus()))
                 .orElseThrow(() -> new UserNotFoundException(id));
@@ -55,8 +47,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long id) {
-        log.info("Deleting user: id={}", id);
-
         var existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
 

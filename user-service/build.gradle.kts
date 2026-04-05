@@ -18,11 +18,13 @@ repositories {
 }
 
 var mapstructVersion = "1.6.3"
+var aopVersion = "3.5.13"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-flyway")
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")
+	implementation("org.springframework.boot:spring-boot-starter-aop:${aopVersion}")
 	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 	implementation("org.flywaydb:flyway-database-postgresql")
 	implementation("org.mapstruct:mapstruct:${mapstructVersion}")
