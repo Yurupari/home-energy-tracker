@@ -5,6 +5,7 @@ import com.yurupari.user_service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +30,7 @@ public class UserControllerV1 {
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
         var userDto = userService.getUserById(id);
-        return new ResponseEntity<>(userDto, HttpStatus.OK);
+        return ResponseEntity.ok(userDto);
     }
 
     @PutMapping("/{id}")
@@ -38,6 +39,12 @@ public class UserControllerV1 {
             @RequestBody UserDto userDto
     ) {
         userService.updateUser(id, userDto);
-        return new ResponseEntity<>("User updated successfully", HttpStatus.OK);
+        return ResponseEntity.ok("User updated successfully");
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 }

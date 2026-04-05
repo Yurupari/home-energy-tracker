@@ -22,6 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class UserServiceImplTest extends BaseUnitTest {
@@ -73,6 +75,8 @@ class UserServiceImplTest extends BaseUnitTest {
         when(userRepository.findById(any())).thenReturn(Optional.of(savedUser));
 
         assertDoesNotThrow(() -> userService.updateUser(1L, updateUserDto));
+
+        verify(userRepository, times(1)).save(any());
     }
 
     @Test
@@ -82,5 +86,23 @@ class UserServiceImplTest extends BaseUnitTest {
         when(userRepository.findById(any())).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> userService.updateUser(30L, updateUserDto));
+    }
+
+    @Test
+    void deleteUser_Success() throws IOException {
+        var savedUser = jsonTestUtils.loadObject(SAVED_USER_JSON, User.class);
+
+        when(userRepository.findById(any())).thenReturn(Optional.of(savedUser));
+
+        assertDoesNotThrow(() -> userService.deleteUser(1L));
+
+        verify(userRepository, times(1)).save(any());
+    }
+
+    @Test
+    void deleteUser_UserNotFound() throws IOException {
+        when(userRepository.findById(any())).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> userService.deleteUser(30L));
     }
 }

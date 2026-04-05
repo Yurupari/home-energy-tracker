@@ -2,7 +2,7 @@ package com.yurupari.user_service.service.impl;
 
 import com.yurupari.user_service.exception.UserNotFoundException;
 import com.yurupari.user_service.model.dto.UserDto;
-import com.yurupari.user_service.model.entity.User;
+import com.yurupari.user_service.model.enums.Status;
 import com.yurupari.user_service.model.mapper.UserMapper;
 import com.yurupari.user_service.repository.UserRepository;
 import com.yurupari.user_service.service.UserService;
@@ -35,6 +35,7 @@ public class UserServiceImpl implements UserService {
         log.info("Getting user: id={}", id);
 
         return userRepository.findById(id)
+                .filter(u -> Status.ACTIVE.equals(u.getStatus()))
                 .map(userMapper::toDto)
                 .orElseThrow(() -> new UserNotFoundException(id));
     }
@@ -44,9 +45,22 @@ public class UserServiceImpl implements UserService {
         log.info("Updating user: id={}, user={}", id, userDto);
 
         var existingUser = userRepository.findById(id)
+                .filter(u -> Status.ACTIVE.equals(u.getStatus()))
                 .orElseThrow(() -> new UserNotFoundException(id));
 
         userMapper.updateEntityFromDto(userDto, existingUser);
+
+        userRepository.save(existingUser);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        log.info("Deleting user: id={}", id);
+
+        var existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+
+        existingUser.setStatus(Status.INACTIVE);
 
         userRepository.save(existingUser);
     }

@@ -57,4 +57,11 @@ class UserControllerV1Test extends BaseUnitTest {
 
         verify(userService, times(1)).updateUser(1L, updateUserDto);
     }
+
+    @Test
+    void deleteUser() throws IOException {
+        assertDoesNotThrow(() -> userControllerV1.deleteUser(1L));
+
+        verify(userService, times(1)).deleteUser(1L);
+    }
 }
