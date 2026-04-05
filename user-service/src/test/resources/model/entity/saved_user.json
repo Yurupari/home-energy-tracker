@@ -1,0 +1,12 @@
+{
+  "id": 1,
+  "name": "TEST_NAME",
+  "surname": "TEST_SURNAME",
+  "email": "test@email.com",
+  "address": "TEST_ADDRESS",
+  "alerting": true,
+  "energyAlertingThreshold": 100.0,
+  "status": "ACTIVE",
+  "createdAt": "14-02-2026T15:30:00",
+  "updatedAt": "14-02-2026T15:30:00"
+}
