@@ -17,7 +17,6 @@ repositories {
 	mavenCentral()
 }
 
-var commonDataVersion = "0.0.1-SNAPSHOT"
 var mapstructVersion = "1.6.3"
 var aopVersion = "3.5.13"
 

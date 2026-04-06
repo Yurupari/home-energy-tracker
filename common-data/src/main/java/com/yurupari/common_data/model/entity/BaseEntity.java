@@ -1,41 +1,32 @@
-package com.yurupari.user_service.model.entity;
+package com.yurupari.common_data.model.entity;
 
 import com.yurupari.common_data.model.enums.Status;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "users")
-@AllArgsConstructor
+@MappedSuperclass
 @NoArgsConstructor
-@Builder
+@AllArgsConstructor
+@SuperBuilder
 @Data
-public class User {
-
+public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String name;
-    private String surname;
-    private String email;
-    private String address;
-    private Boolean alerting;
-    private Double energyAlertingThreshold;
 
     @Enumerated(EnumType.STRING)
     @Builder.Default
