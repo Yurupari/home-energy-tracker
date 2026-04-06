@@ -1,5 +1,6 @@
 package com.yurupari.device_service.controller.v1;
 
+import com.yurupari.device_service.model.dto.DeviceDto;
 import com.yurupari.device_service.service.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -17,10 +17,12 @@ repositories {
 	mavenCentral()
 }
 
+var commonDataVersion = "0.0.1-SNAPSHOT"
 var mapstructVersion = "1.6.3"
 var aopVersion = "3.5.13"
 
 dependencies {
+	implementation(project(":common-data"))
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-flyway")
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")

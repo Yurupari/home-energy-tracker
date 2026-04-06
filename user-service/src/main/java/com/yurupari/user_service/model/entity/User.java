@@ -1,6 +1,6 @@
 package com.yurupari.user_service.model.entity;
 
-import com.yurupari.user_service.model.enums.Status;
+import com.yurupari.common.model.enums.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

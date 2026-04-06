@@ -1,4 +1,4 @@
-package com.yurupari.user_service.model.enums;
+package com.yurupari.common_data.model.enums;
 
 public enum Status {
     ACTIVE,

@@ -1,4 +1,4 @@
-package com.yurupari.user_service.model.http.request;
+package com.yurupari.common_data.model.http.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.http.HttpStatus;

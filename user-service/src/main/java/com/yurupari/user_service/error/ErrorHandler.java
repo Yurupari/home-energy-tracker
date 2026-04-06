@@ -1,7 +1,7 @@
 package com.yurupari.user_service.error;
 
 import com.yurupari.user_service.exception.UserNotFoundException;
-import com.yurupari.user_service.model.http.request.ErrorResponse;
+import com.yurupari.common_data.model.http.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

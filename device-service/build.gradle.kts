@@ -17,6 +17,8 @@ repositories {
 	mavenCentral()
 }
 
+var commonDataVersion = "0.0.1-SNAPSHOT"
+
 dependencies {
 	implementation(project(":common-data"))
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -26,6 +28,7 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
+	testImplementation("com.h2database:h2")
 	testCompileOnly("org.projectlombok:lombok")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	testAnnotationProcessor("org.projectlombok:lombok")

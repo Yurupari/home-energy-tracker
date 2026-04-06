@@ -1,6 +1,6 @@
 package com.yurupari.user_service.model.dto;
 
-import com.yurupari.user_service.model.enums.Status;
+import com.yurupari.common_data.model.enums.Status;
 
 public record UserDto(
         Long id,
