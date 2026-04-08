@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.yurupari.device_service.constants.TestConstants.CREATE_DEVICE_DTO_V1_JSON;
 import static com.yurupari.device_service.constants.TestConstants.UPDATE_DEVICE_DTO_V1_JSON;
+import static com.yurupari.device_service.constants.TestConstants.UPDATE_NOT_FOUND_DEVICE_DTO_V1_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -53,6 +54,13 @@ class DeviceServiceApplicationTests {
 	}
 
 	@Test
+	void getDeviceById_DeviceNotFound() throws Exception {
+		mockMvc.perform(
+						get("/api/v1/device/9999"))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
 	void updateDevice() throws Exception {
 		var request = jsonTestUtils.loadRequest(UPDATE_DEVICE_DTO_V1_JSON);
 
@@ -64,9 +72,27 @@ class DeviceServiceApplicationTests {
 	}
 
 	@Test
+	void updateDevice_DeviceNotFound() throws Exception {
+		var request = jsonTestUtils.loadRequest(UPDATE_NOT_FOUND_DEVICE_DTO_V1_JSON);
+
+		mockMvc.perform(
+						put("/api/v1/device/9999")
+								.contentType(MediaType.APPLICATION_JSON)
+								.content(request))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
 	void deleteDevice() throws Exception {
 		mockMvc.perform(
 				delete("/api/v1/device/1"))
 				.andExpect(status().isNoContent());
+	}
+
+	@Test
+	void deleteDevice_DeviceNotFound() throws Exception {
+		mockMvc.perform(
+						delete("/api/v1/device/9999"))
+				.andExpect(status().isNotFound());
 	}
 }
