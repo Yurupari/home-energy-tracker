@@ -1,6 +1,6 @@
 package com.yurupari.user_service;
 
-import com.yurupari.user_service.config.JacksonConfig;
+import com.yurupari.common_data.config.JacksonConfig;
 import com.yurupari.user_service.utils.JsonTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
