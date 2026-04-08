@@ -3,6 +3,7 @@ package com.yurupari.device_service.controller.v1;
 import com.yurupari.device_service.model.dto.DeviceDto;
 import com.yurupari.device_service.service.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,7 @@ public class DeviceControllerV1 {
     @PostMapping("/create")
     public ResponseEntity<DeviceDto> createDevice(@RequestBody DeviceDto deviceDto) {
         DeviceDto createdDevice = deviceService.createDevice(deviceDto);
-        return ResponseEntity.ok(createdDevice);
+        return new ResponseEntity<>(createdDevice, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
@@ -33,12 +34,12 @@ public class DeviceControllerV1 {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateDevice(
+    public ResponseEntity<String> updateDevice(
             @PathVariable Long id,
             @RequestBody DeviceDto deviceDto
     ) {
         deviceService.updateDevice(id, deviceDto);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Device updated successfully");
     }
 
     @DeleteMapping("/{id}")
