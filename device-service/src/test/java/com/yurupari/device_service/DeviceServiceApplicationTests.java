@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.yurupari.device_service.constants.TestConstants.CREATE_DEVICE_DTO_V1_JSON;
 import static com.yurupari.device_service.constants.TestConstants.UPDATE_DEVICE_DTO_V1_JSON;
-import static com.yurupari.device_service.constants.TestConstants.UPDATE_NOT_FOUND_DEVICE_DTO_V1_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -73,7 +72,7 @@ class DeviceServiceApplicationTests {
 
 	@Test
 	void updateDevice_DeviceNotFound() throws Exception {
-		var request = jsonTestUtils.loadRequest(UPDATE_NOT_FOUND_DEVICE_DTO_V1_JSON);
+		var request = jsonTestUtils.loadRequest(UPDATE_DEVICE_DTO_V1_JSON);
 
 		mockMvc.perform(
 						put("/api/v1/device/9999")
