@@ -1,5 +1,6 @@
 package com.yurupari.device_service.controller.v1;
 
+import com.yurupari.common_data.annotation.TrackTime;
 import com.yurupari.device_service.model.dto.DeviceDto;
 import com.yurupari.device_service.service.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/device")
+@TrackTime
 public class DeviceControllerV1 {
 
     @Autowired
@@ -23,13 +25,13 @@ public class DeviceControllerV1 {
 
     @PostMapping("/create")
     public ResponseEntity<DeviceDto> createDevice(@RequestBody DeviceDto deviceDto) {
-        DeviceDto createdDevice = deviceService.createDevice(deviceDto);
+        var createdDevice = deviceService.createDevice(deviceDto);
         return new ResponseEntity<>(createdDevice, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DeviceDto> getDeviceById(@PathVariable Long id) {
-        DeviceDto deviceDto = deviceService.getDeviceById(id);
+        var deviceDto = deviceService.getDeviceById(id);
         return ResponseEntity.ok(deviceDto);
     }
 

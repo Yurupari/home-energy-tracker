@@ -1,5 +1,6 @@
 package com.yurupari.device_service.service.impl;
 
+import com.yurupari.common_data.annotation.Loggable;
 import com.yurupari.common_data.model.enums.Status;
 import com.yurupari.device_service.exception.DeviceNotFoundException;
 import com.yurupari.device_service.model.dto.DeviceDto;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Loggable
 public class DeviceServiceImpl implements DeviceService {
 
     private final DeviceRepository deviceRepository;

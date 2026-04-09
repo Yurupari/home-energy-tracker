@@ -1,4 +1,4 @@
-package com.yurupari.user_service.aspect;
+package com.yurupari.common_data.aspect;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -12,17 +12,19 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ExecutionTimeAspect {
 
-    @Pointcut("execution(* com.yurupari.user_service.controller.*.*(..))")
-    public void controllerMethods() {}
+    @Pointcut("@annotation(com.yurupari.common_data.annotation.TrackTime) || @within(com.yurupari.common_data.annotation.TrackTime)")
+    public void trackTimeMethods() {}
 
-    @Around("controllerMethods()")
+    @Around("trackTimeMethods()")
     public Object logExecutionTime(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         long start = System.currentTimeMillis();
         Object proceed = proceedingJoinPoint.proceed();
         long executionTime = System.currentTimeMillis() - start;
 
-        log.info("Method {} executed in {} ms", proceedingJoinPoint.getSignature().getName(), executionTime);
+        log.info("Method {} executed in {} ms",
+                proceedingJoinPoint.getSignature().getName(),
+                executionTime);
+
         return proceed;
     }
-
 }

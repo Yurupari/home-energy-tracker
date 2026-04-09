@@ -39,7 +39,7 @@ class UserServiceApplicationTests {
 		var request = jsonTestUtils.loadRequest(CREATE_USER_DTO_JSON);
 
 		mockMvc.perform(
-				post("/api/v1/user")
+				post("/api/v1/user/create")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(request))
 				.andExpect(status().isCreated());

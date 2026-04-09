@@ -7,7 +7,7 @@ CREATE TABLE devices (
     status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT 'fk_device_user'
+    CONSTRAINT fk_device_user
         FOREIGN KEY (user_id) REFERENCES users (id)
         ON DELETE CASCADE
 );

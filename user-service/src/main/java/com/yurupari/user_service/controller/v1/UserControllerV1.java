@@ -1,5 +1,6 @@
 package com.yurupari.user_service.controller.v1;
 
+import com.yurupari.common_data.annotation.TrackTime;
 import com.yurupari.user_service.model.dto.UserDto;
 import com.yurupari.user_service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/user")
+@TrackTime
 public class UserControllerV1 {
 
     @Autowired
     private UserService userService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         var createdUser = userService.createUser(userDto);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
