@@ -39,7 +39,7 @@ class UserServiceApplicationTests {
 		var request = jsonTestUtils.loadRequest(CREATE_USER_DTO_JSON);
 
 		mockMvc.perform(
-				post("/api/v1/user")
+				post("/api/v1/user/create")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(request))
 				.andExpect(status().isCreated());
@@ -50,6 +50,13 @@ class UserServiceApplicationTests {
 		mockMvc.perform(
 				get("/api/v1/user/1")
 		).andExpect(status().isOk());
+	}
+
+	@Test
+	void getUserById_UserNotFound() throws Exception {
+		mockMvc.perform(
+				get("/api/v1/user/9999")
+		).andExpect(status().isNotFound());
 	}
 
 	@Test
@@ -64,9 +71,27 @@ class UserServiceApplicationTests {
 	}
 
 	@Test
+	void updateUser_UserNotFound() throws Exception {
+		var request = jsonTestUtils.loadRequest(UPDATE_USER_DTO_V1_JSON);
+
+		mockMvc.perform(
+						put("/api/v1/user/9999")
+								.contentType(MediaType.APPLICATION_JSON)
+								.content(request))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
 	void deleteUser() throws Exception {
 		mockMvc.perform(
 				delete("/api/v1/user/1")
 		).andExpect(status().isNoContent());
+	}
+
+	@Test
+	void deleteUser_UserNotFound() throws Exception {
+		mockMvc.perform(
+				delete("/api/v1/user/9999")
+		).andExpect(status().isNotFound());
 	}
 }

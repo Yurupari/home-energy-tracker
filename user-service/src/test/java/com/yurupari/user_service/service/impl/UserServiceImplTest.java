@@ -7,6 +7,7 @@ import com.yurupari.user_service.model.entity.User;
 import com.yurupari.user_service.model.mapper.UserMapper;
 import com.yurupari.user_service.model.mapper.UserMapperImpl;
 import com.yurupari.user_service.repository.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -37,11 +38,18 @@ class UserServiceImplTest extends BaseUnitTest {
     @Spy
     private UserMapper userMapper = new UserMapperImpl();
 
+    private UserDto createUserDto, updateUserDto;
+    private User savedUser;
+
+    @BeforeEach
+    void setUp() throws IOException {
+        createUserDto = jsonTestUtils.loadObject(CREATE_USER_DTO_JSON, UserDto.class);
+        updateUserDto = jsonTestUtils.loadObject(UPDATE_USER_DTO_V1_JSON, UserDto.class);
+        savedUser = jsonTestUtils.loadObject(SAVED_USER_JSON, User.class);
+    }
+
     @Test
     void createUser() throws IOException {
-        var createUserDto = jsonTestUtils.loadObject(CREATE_USER_DTO_JSON, UserDto.class);
-        var savedUser = jsonTestUtils.loadObject(SAVED_USER_JSON, User.class);
-
         when(userRepository.save(any())).thenReturn(savedUser);
 
         var response = userService.createUser(createUserDto);
@@ -51,8 +59,6 @@ class UserServiceImplTest extends BaseUnitTest {
 
     @Test
     void getUserById_Success() throws IOException {
-        var savedUser = jsonTestUtils.loadObject(SAVED_USER_JSON, User.class);
-
         when(userRepository.findById(any())).thenReturn(Optional.of(savedUser));
 
         var response = userService.getUserById(1L);
@@ -69,9 +75,6 @@ class UserServiceImplTest extends BaseUnitTest {
 
     @Test
     void updateUser_Success() throws IOException {
-        var updateUserDto = jsonTestUtils.loadObject(UPDATE_USER_DTO_V1_JSON, UserDto.class);
-        var savedUser = jsonTestUtils.loadObject(SAVED_USER_JSON, User.class);
-
         when(userRepository.findById(any())).thenReturn(Optional.of(savedUser));
 
         assertDoesNotThrow(() -> userService.updateUser(1L, updateUserDto));
@@ -81,8 +84,6 @@ class UserServiceImplTest extends BaseUnitTest {
 
     @Test
     void updateUser_UserNotFound() throws IOException {
-        var updateUserDto = jsonTestUtils.loadObject(UPDATE_USER_DTO_V1_JSON, UserDto.class);
-
         when(userRepository.findById(any())).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> userService.updateUser(30L, updateUserDto));
@@ -90,8 +91,6 @@ class UserServiceImplTest extends BaseUnitTest {
 
     @Test
     void deleteUser_Success() throws IOException {
-        var savedUser = jsonTestUtils.loadObject(SAVED_USER_JSON, User.class);
-
         when(userRepository.findById(any())).thenReturn(Optional.of(savedUser));
 
         assertDoesNotThrow(() -> userService.deleteUser(1L));
@@ -103,6 +102,6 @@ class UserServiceImplTest extends BaseUnitTest {
     void deleteUser_UserNotFound() throws IOException {
         when(userRepository.findById(any())).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, () -> userService.deleteUser(30L));
+        assertThrows(UserNotFoundException.class, () -> userService.deleteUser(any()));
     }
 }

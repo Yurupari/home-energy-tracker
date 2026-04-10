@@ -33,6 +33,25 @@ services:
     depends_on:
       - postgres
 
+  device-service:
+    build:
+      context: .
+      dockerfile: ./device-service/src/main/docker/Dockerfile
+    container_name: device-service
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=home_energy_tracker
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+    volumes:
+      - ./logs/:/logs
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
+
 volumes:
   db-data:
   db-logs:

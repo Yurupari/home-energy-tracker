@@ -1,8 +1,9 @@
 package com.yurupari.user_service.service.impl;
 
+import com.yurupari.common_data.annotation.Loggable;
+import com.yurupari.common_data.model.enums.Status;
 import com.yurupari.user_service.exception.UserNotFoundException;
 import com.yurupari.user_service.model.dto.UserDto;
-import com.yurupari.user_service.model.enums.Status;
 import com.yurupari.user_service.model.mapper.UserMapper;
 import com.yurupari.user_service.repository.UserRepository;
 import com.yurupari.user_service.service.UserService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Loggable
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;

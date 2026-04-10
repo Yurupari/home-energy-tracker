@@ -1,6 +1,6 @@
 package com.yurupari.user_service.model.mapper;
 
-import com.yurupari.user_service.config.CentralMapperConfig;
+import com.yurupari.common_data.config.CentralMapperConfig;
 import com.yurupari.user_service.model.dto.UserDto;
 import com.yurupari.user_service.model.entity.User;
 import org.mapstruct.Mapper;

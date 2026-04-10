@@ -1,33 +1,14 @@
 plugins {
 	java
-	id("org.springframework.boot") version "4.0.5"
-	id("io.spring.dependency-management") version "1.1.7"
-}
-
-group = "com.yurupari"
-version = "0.0.1-SNAPSHOT"
-
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(25)
-	}
-}
-
-repositories {
-	mavenCentral()
 }
 
 var mapstructVersion = "1.6.3"
-var aopVersion = "3.5.13"
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation(project(":common-data"))
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-flyway")
-	implementation("org.springframework.boot:spring-boot-starter-webmvc")
-	implementation("org.springframework.boot:spring-boot-starter-aop:${aopVersion}")
-	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 	implementation("org.flywaydb:flyway-database-postgresql")
-	implementation("org.mapstruct:mapstruct:${mapstructVersion}")
 	compileOnly("org.projectlombok:lombok")
 	runtimeOnly("org.postgresql:postgresql")
 	annotationProcessor("org.projectlombok:lombok")
@@ -40,10 +21,6 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	testAnnotationProcessor("org.projectlombok:lombok")
 	testAnnotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
-}
-
-tasks.withType<Test> {
-	useJUnitPlatform()
 }
 
 tasks.bootJar {
