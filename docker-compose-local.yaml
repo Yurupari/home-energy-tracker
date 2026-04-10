@@ -98,7 +98,7 @@ services:
     container_name: ingestion_service
     environment:
       - KAFKA_SERVER=kafka
-      - KAFKA_EXTERNAL_PORT=9094
+      - KAFKA_EXTERNAL_PORT=9092
     volumes:
       - ./logs/:/logs
     ports:
