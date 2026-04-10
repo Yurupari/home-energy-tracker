@@ -4,3 +4,11 @@ server:
 spring:
   application:
     name: ingestion-service
+
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVER}:${KAFKA_EXTERNAL_PORT}
+    template:
+      default-topic: energy-usage
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

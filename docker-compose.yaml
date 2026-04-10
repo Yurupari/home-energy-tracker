@@ -4,9 +4,9 @@ services:
     container_name: postgres
     restart: always
     environment:
-      - POSTGRES_DB=home_energy_tracker
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
     ports:
       - "5432:5432"
     volumes:
@@ -20,12 +20,12 @@ services:
       dockerfile: ./user-service/src/main/docker/Dockerfile
     container_name: user-service
     environment:
-      - POSTGRES_HOST=postgres
-      - POSTGRES_PORT=5432
-      - POSTGRES_DB=home_energy_tracker
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+      - POSTGRES_HOST
+      - POSTGRES_PORT
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - SPRING_JPA_HIBERNATE_DDL_AUTO
     volumes:
       - ./logs/:/logs
     ports:
@@ -39,12 +39,12 @@ services:
       dockerfile: ./device-service/src/main/docker/Dockerfile
     container_name: device-service
     environment:
-      - POSTGRES_HOST=postgres
-      - POSTGRES_PORT=5432
-      - POSTGRES_DB=home_energy_tracker
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+      - POSTGRES_HOST
+      - POSTGRES_PORT
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - SPRING_JPA_HIBERNATE_DDL_AUTO
     volumes:
       - ./logs/:/logs
     ports:
