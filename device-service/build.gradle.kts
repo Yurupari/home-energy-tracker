@@ -21,8 +21,6 @@ var mapstructVersion = "1.6.3"
 
 dependencies {
 	implementation(project(":common-data"))
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-webmvc")
 	compileOnly("org.projectlombok:lombok")
 	runtimeOnly("org.postgresql:postgresql")
 	annotationProcessor("org.projectlombok:lombok")

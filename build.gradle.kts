@@ -24,19 +24,6 @@ subprojects {
         }
     }
 
-    val mapstructVersion = "1.6.3"
-
     dependencies {
-        implementation("org.mapstruct:mapstruct:${mapstructVersion}")
-        compileOnly("org.projectlombok:lombok")
-        annotationProcessor("org.projectlombok:lombok")
-        annotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
-        testImplementation("org.springframework.boot:spring-boot-starter-test")
-        testCompileOnly("org.projectlombok:lombok")
-        testAnnotationProcessor("org.projectlombok:lombok")
-    }
-
-    tasks.withType<Test> {
-        useJUnitPlatform()
     }
 }
