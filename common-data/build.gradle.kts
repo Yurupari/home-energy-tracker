@@ -28,7 +28,6 @@ tasks.jar {
 }
 
 tasks.test {
-	useJUnitPlatform()
 	filter {
 		isFailOnNoMatchingTests = false
 	}
