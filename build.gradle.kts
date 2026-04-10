@@ -41,7 +41,14 @@ subprojects {
         classDirectories.setFrom(
             files(classDirectories.files.map {
                 fileTree(it) {
-                    exclude("**/aspect/**", "**/annotation/**", "**/config/**")
+                    exclude(
+                        "**/aspect/**", 
+                        "**/annotation/**", 
+                        "**/config/**", 
+                        "**/dto/**", 
+                        "**/exception/**",
+                        "**/OpenApiConfig*"
+                    )
                 }
             })
         )

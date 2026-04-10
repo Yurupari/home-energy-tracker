@@ -3,6 +3,7 @@ plugins {
 }
 
 var mapstructVersion = "1.6.3"
+var springdocVersion = "2.8.5"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
@@ -11,6 +12,7 @@ dependencies {
 	api("com.fasterxml.jackson.core:jackson-annotations")
 	api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 	api("org.springframework.boot:spring-boot-starter-data-jpa")
+	api("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}")
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 	annotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
