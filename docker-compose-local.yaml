@@ -122,6 +122,17 @@ services:
     depends_on:
       - kafka
 
+  usage-service:
+    build:
+      context: .
+      dockerfile: ./usage-service/src/main/docker/Dockerfile
+    container_name: usage_service
+    environment:
+      - INFLUX_HOST=influxdb:8072
+      - INFLUXDB_TOKEN=my-token
+      - INFLUXDB_ORG=yurupari
+      - INFLUXDB_BUCKET=usage-bucket
+
 volumes:
   db-data:
   db-logs:

@@ -4,3 +4,19 @@ server:
 spring:
   application:
     name: usage-service
+
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVER}:${KAFKA_EXTERNAL_PORT}
+    consumer:
+      group-id: usage-service
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.type.mapping: energyUsageEvent:com.yurupari.common_data.kafka.event.EnergyUsageEvent
+        spring.json.trusted.packages: com.yurupari.*
+
+influx:
+  url: ${INFLUX_HOST}
+  token: ${INFLUXDB_TOKEN}
+  org: ${INFLUXDB_ORG}
+  bucket: ${INFLUXDB_BUCKET}

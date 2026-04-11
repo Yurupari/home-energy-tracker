@@ -3,11 +3,14 @@ plugins {
 }
 
 var mapstructVersion = "1.6.3"
+var influxClientJavaVersion = "7.5.0"
 
 dependencies {
-	implementation(project(":common-data"))
-	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation(project(":common-data")) {
+		exclude(group = "org.springframework.boot", module = "spring-boot-starter-data-jpa")
+	}
 	implementation("org.springframework.boot:spring-boot-starter-kafka")
+	implementation("com.influxdb:influxdb-client-java:${influxClientJavaVersion}")
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 	annotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
