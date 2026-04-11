@@ -53,6 +53,22 @@ services:
     depends_on:
       - kafka
 
+  influxdb:
+    image: influxdb:2.8
+    container_name: influxdb
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=admin123
+      - DOCKER_INFLUXDB_INIT_ORG=yurupari
+      - DOCKER_INFLUXDB_INIT_BUCKET=usage-bucket
+      - DOCKER_INFLUXDB_INIT_RETENTION=1w
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-token
+    ports:
+      - "8072:8086"
+    volumes:
+      - ./influxdb_data:/var/lib/influxdb2
+
   user-service:
     build:
       context: .
