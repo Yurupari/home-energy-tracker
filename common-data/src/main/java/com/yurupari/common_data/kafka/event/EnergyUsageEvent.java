@@ -1,4 +1,4 @@
-package com.yurupari.kafka.event;
+package com.yurupari.common_data.kafka.event;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

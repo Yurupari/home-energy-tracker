@@ -3,7 +3,7 @@ package com.yurupari.ingestion_service.service.impl;
 import com.yurupari.common_data.annotation.Loggable;
 import com.yurupari.ingestion_service.model.mapper.EnergyUsageMapper;
 import com.yurupari.ingestion_service.model.dto.EnergyUsageDto;
-import com.yurupari.kafka.event.EnergyUsageEvent;
+import com.yurupari.common_data.kafka.event.EnergyUsageEvent;
 import com.yurupari.ingestion_service.service.IngestionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
