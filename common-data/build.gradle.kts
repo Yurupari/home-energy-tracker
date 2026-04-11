@@ -4,14 +4,15 @@ plugins {
 
 var mapstructVersion = "1.6.3"
 var springdocVersion = "2.8.5"
+var aopVersion = "4.0.0-M2"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
 	api("org.mapstruct:mapstruct:${mapstructVersion}")
 	api("org.springframework.boot:spring-boot-starter-webmvc")
-	api("com.fasterxml.jackson.core:jackson-annotations")
-	api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+	api("org.springframework.boot:spring-boot-starter-json")
 	api("org.springframework.boot:spring-boot-starter-data-jpa")
+	api("org.springframework.boot:spring-boot-starter-aop:${aopVersion}")
 	api("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}")
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
