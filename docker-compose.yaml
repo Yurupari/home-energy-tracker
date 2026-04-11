@@ -14,6 +14,45 @@ services:
       - db-data:/var/lib/postgresql
       - db-logs:/var/log/postgresql
 
+  kafka:
+    image: apache/kafka:latest
+    container_name: kafka
+    restart: always
+    environment:
+      - KAFKA_NODE_ID
+      - KAFKA_CLUSTER_ID
+      - KAFKA_PROCESS_ROLES
+      - KAFKA_CONTROLLER_QUORUM_VOTERS
+      - KAFKA_CONTROLLER_LISTENER_NAMES
+      - KAFKA_LISTENERS
+      - KAFKA_ADVERTISED_LISTENERS
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+      - KAFKA_INTER_BROKER_LISTENER_NAME
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+      - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
+      - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR
+      - KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE
+      - KAFKA_NUM_PARTITIONS
+    ports:
+      - "9092:9092"
+      - "9094:9094"
+    volumes:
+      - ./docker/kafka_data:/var/lib/kafka/data
+
+  kafka-ui:
+    image: ghcr.io/kafbat/kafka-ui:latest
+    container_name: kafka-ui
+    restart: unless-stopped
+    environment:
+      - KAFKA_CLUSTERS_0_NAME
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
+      - DYNAMIC_CONFIG_ENABLED
+    ports:
+      - "8070:8080"
+    depends_on:
+      - kafka
+
   user-service:
     build:
       context: .
@@ -51,6 +90,21 @@ services:
       - "8081:8081"
     depends_on:
       - postgres
+
+  ingestion-service:
+    build:
+      context: .
+      dockerfile: ./ingestion-service/src/main/docker/Dockerfile
+    container_name: ingestion_service
+    environment:
+      - KAFKA_SERVER
+      - KAFKA_EXTERNAL_PORT
+    volumes:
+      - ./logs/:/logs
+    ports:
+      - "8082:8082"
+    depends_on:
+      - kafka
 
 volumes:
   db-data:
