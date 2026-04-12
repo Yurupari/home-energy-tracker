@@ -4,3 +4,9 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringDeserializer
       value-serializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
+influx:
+  url: http://localhost:8086
+  token: test-token
+  org: test-org
+  bucket: test-bucket

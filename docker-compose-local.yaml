@@ -128,10 +128,19 @@ services:
       dockerfile: ./usage-service/src/main/docker/Dockerfile
     container_name: usage_service
     environment:
-      - INFLUX_HOST=influxdb:8072
+      - KAFKA_SERVER=kafka
+      - KAFKA_EXTERNAL_PORT=9092
+      - INFLUX_HOST=http://influxdb:8086
       - INFLUXDB_TOKEN=my-token
       - INFLUXDB_ORG=yurupari
       - INFLUXDB_BUCKET=usage-bucket
+    volumes:
+      - ./logs/:/logs
+    ports:
+      - "8083:8083"
+    depends_on:
+      - kafka
+      - influxdb
 
 volumes:
   db-data:

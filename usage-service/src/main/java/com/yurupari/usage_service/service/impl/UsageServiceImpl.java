@@ -8,7 +8,6 @@ import com.yurupari.common_data.kafka.event.EnergyUsageEvent;
 import com.yurupari.usage_service.service.UsageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,7 +24,6 @@ public class UsageServiceImpl implements UsageService {
     private String influxOrg;
 
     @Override
-    @KafkaListener(topics = "energy-usage", groupId = "usage-service")
     public void energyUsageEvent(EnergyUsageEvent energyUsageEvent) {
         var point = Point.measurement("energy_usage")
                 .addTag("deviceId", String.valueOf(energyUsageEvent.deviceId()))
