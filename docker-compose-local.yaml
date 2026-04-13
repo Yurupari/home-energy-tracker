@@ -63,7 +63,7 @@ services:
       - DOCKER_INFLUXDB_INIT_ORG=yurupari
       - DOCKER_INFLUXDB_INIT_BUCKET=usage-bucket
       - DOCKER_INFLUXDB_INIT_RETENTION=1w
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-token
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=yurupari-token-db
     ports:
       - "8072:8086"
     volumes:
@@ -131,7 +131,7 @@ services:
       - KAFKA_SERVER=kafka
       - KAFKA_EXTERNAL_PORT=9092
       - INFLUX_HOST=http://influxdb:8086
-      - INFLUXDB_TOKEN=my-token
+      - INFLUXDB_TOKEN=yurupari-token-db
       - INFLUXDB_ORG=yurupari
       - INFLUXDB_BUCKET=usage-bucket
     volumes:
