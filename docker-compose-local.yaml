@@ -134,6 +134,8 @@ services:
       - INFLUXDB_TOKEN=yurupari-token-db
       - INFLUXDB_ORG=yurupari
       - INFLUXDB_BUCKET=usage-bucket
+      - DEVICE_SERVICE_URL=http://device-service:8081
+      - USER_SERVICE_URL=http://user-service:8080
     volumes:
       - ./logs/:/logs
     ports:
@@ -141,6 +143,8 @@ services:
     depends_on:
       - kafka
       - influxdb
+      - user-service
+      - device-service
 
 volumes:
   db-data:
