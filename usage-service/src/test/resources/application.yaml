@@ -9,8 +9,8 @@ spring:
         spring.json.type.mapping: energyUsageEvent:com.yurupari.common_data.kafka.event.EnergyUsageEvent
         spring.json.trusted.packages: com.yurupari.*
     producer:
-      key-serializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 influx:
   url: http://localhost:8086
