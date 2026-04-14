@@ -17,6 +17,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import static com.yurupari.usage_service.constants.TestConstants.DEVICE_DTO_JSON;
 import static com.yurupari.usage_service.constants.TestConstants.DEVICE_ENERGY_JSON;
@@ -24,6 +25,7 @@ import static com.yurupari.usage_service.constants.TestConstants.DEVICE_ENERGY_U
 import static com.yurupari.usage_service.constants.TestConstants.USER_DTO_JSON;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -61,6 +63,9 @@ class EnergyUsageSchedulerTest extends BaseUnitTest {
 
         var userDto = jsonTestUtils.loadObject(USER_DTO_JSON, UserDto.class);
         when(userService.getUserById(any())).thenReturn(userDto);
+
+        when(kafkaTemplate.send(anyString(), any()))
+                .thenReturn(CompletableFuture.completedFuture(null));
 
         assertDoesNotThrow(() -> energyUsageScheduler.aggregateDeviceEnergyUsage());
 

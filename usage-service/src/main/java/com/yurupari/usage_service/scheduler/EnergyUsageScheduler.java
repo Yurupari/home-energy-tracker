@@ -92,7 +92,12 @@ public class EnergyUsageScheduler {
                         .email(user.email())
                         .build();
 
-                kafkaTemplate.send("energy-alerts", alertingEvent);
+                kafkaTemplate.send("energy-alerts", alertingEvent)
+                        .whenComplete((result, ex) ->
+                                Optional.ofNullable(ex).ifPresentOrElse(
+                                        e -> log.error("Unable to send Alerting Event: error={}", e.getMessage()),
+                                        () -> log.info("Sent Alerting Event: event={}", alertingEvent)
+                                ));
             }
             else {
                 log.info("User is within the energy threshold: userId={}, total_consumption={}, threshold={}",

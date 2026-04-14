@@ -29,7 +29,7 @@ public class IngestionServiceImpl implements IngestionService {
         kafkaTemplate.send("energy-usage", energyUsageEvent)
                 .whenComplete((result, ex) ->
                     Optional.ofNullable(ex).ifPresentOrElse(
-                            e -> log.error("Unable to ingest Energy Usage Event: error={}", ex.getMessage()),
+                            e -> log.error("Unable to ingest Energy Usage Event: error={}", e.getMessage()),
                             () -> log.info("Ingested Energy Usage Event: event={}", energyUsageEvent)
                     )
                 );
