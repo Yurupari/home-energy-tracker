@@ -15,6 +15,8 @@ dependencies {
 	implementation("com.influxdb:influxdb-client-java:${influxClientJavaVersion}")
 	implementation(platform("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"))
 	implementation("org.springframework.cloud:spring-cloud-starter-openfeign:${openFeignVersion}")
+	implementation("org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j")
+	implementation("io.github.resilience4j:resilience4j-spring-boot3")
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 	annotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")

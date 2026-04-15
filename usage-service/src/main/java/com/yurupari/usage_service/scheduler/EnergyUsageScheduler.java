@@ -5,6 +5,7 @@ import com.yurupari.usage_service.model.DeviceEnergy;
 import com.yurupari.usage_service.service.DeviceService;
 import com.yurupari.usage_service.service.UsageService;
 import com.yurupari.usage_service.service.UserService;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,16 +53,15 @@ public class EnergyUsageScheduler {
                 .map(deviceEnergy -> {
                     var deviceDto = deviceService.getDeviceById(deviceEnergy.getDeviceId());
 
-                    Optional.ofNullable(deviceDto).ifPresentOrElse(
-                            dto -> {
-                                deviceEnergy.setUserId(dto.userId());
-                            },
-                            () -> log.warn("Device not found: id={}", deviceEnergy.getDeviceId())
-                    );
+                    if (deviceDto == null) {
+                        return null;
+                    }
+
+                    deviceEnergy.setUserId(deviceDto.userId());
 
                     return deviceEnergy;
                 })
-                .filter(d -> Objects.nonNull(d.getUserId()))
+                .filter(d -> Objects.nonNull(d) && Objects.nonNull(d.getUserId()))
                 .toList();
     }
 
@@ -69,10 +69,12 @@ public class EnergyUsageScheduler {
         Map<Long, List<DeviceEnergy>> userDeviceEnergyMap = listDeviceEnergy.stream()
                 .collect(Collectors.groupingBy(DeviceEnergy::getUserId));
 
-        var streamUserDto = userDeviceEnergyMap.keySet().stream()
-                .map(userService::getUserById);
+        var listUserDto = userDeviceEnergyMap.keySet().stream()
+                .map(userService::getUserById)
+                .filter(Objects::nonNull)
+                .toList();
 
-        streamUserDto.forEach(user -> {
+        listUserDto.forEach(user -> {
             final var threshold = user.energyAlertingThreshold();
             final var devices = userDeviceEnergyMap.get(user.id());
 

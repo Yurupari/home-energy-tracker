@@ -7,8 +7,8 @@ import com.influxdb.client.write.Point;
 import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 import com.yurupari.common_data.kafka.event.EnergyUsageEvent;
-import com.yurupari.usage_service.client.DeviceFeignClient;
-import com.yurupari.usage_service.client.UserFeignClient;
+import com.yurupari.usage_service.client.DeviceFeignClientV1;
+import com.yurupari.usage_service.client.UserFeignClientV1;
 import com.yurupari.usage_service.model.dto.DeviceDto;
 import com.yurupari.usage_service.model.dto.UserDto;
 import com.yurupari.usage_service.scheduler.EnergyUsageScheduler;
@@ -59,10 +59,10 @@ class UsageServiceApplicationTests {
 	private JsonTestUtils jsonTestUtils;
 
 	@MockitoBean
-	private DeviceFeignClient deviceFeignClient;
+	private DeviceFeignClientV1 deviceFeignClientV1;
 
 	@MockitoBean
-	private UserFeignClient userFeignClient;
+	private UserFeignClientV1 userFeignClientV1;
 
 	@MockitoBean
 	private InfluxDBClient influxDBClient;
@@ -119,10 +119,10 @@ class UsageServiceApplicationTests {
 		when(queryApi.query(anyString(), anyString())).thenReturn(List.of(fluxTable));
 
 		var deviceDto = jsonTestUtils.loadObject(DEVICE_DTO_JSON, DeviceDto.class);
-		when(deviceFeignClient.getDeviceById(101L)).thenReturn(deviceDto);
+		when(deviceFeignClientV1.getDeviceById(101L)).thenReturn(deviceDto);
 
 		var userDto = jsonTestUtils.loadObject(USER_DTO_JSON, UserDto.class);
-		when(userFeignClient.getUserById(1L)).thenReturn(userDto);
+		when(userFeignClientV1.getUserById(1L)).thenReturn(userDto);
 
 		Awaitility.await()
 				.atMost(Duration.ofSeconds(15))
