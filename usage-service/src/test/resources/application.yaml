@@ -1,0 +1,28 @@
+spring:
+  kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers}
+    consumer:
+      group-id: test-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.type.mapping: energyUsageEvent:com.yurupari.common_data.kafka.event.EnergyUsageEvent
+        spring.json.trusted.packages: com.yurupari.*
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+influx:
+  url: http://localhost:8086
+  token: test-token
+  org: test-org
+  bucket: test-bucket
+
+energy-usage:
+  range-time: 3600
+
+services:
+  device-service:
+    url: http://localhost:8081
+  user-service:
+    url: http://localhost:8081

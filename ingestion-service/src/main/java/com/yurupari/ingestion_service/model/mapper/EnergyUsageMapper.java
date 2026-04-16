@@ -2,7 +2,7 @@ package com.yurupari.ingestion_service.model.mapper;
 
 import com.yurupari.common_data.config.CentralMapperConfig;
 import com.yurupari.ingestion_service.model.dto.EnergyUsageDto;
-import com.yurupari.kafka.event.EnergyUsageEvent;
+import com.yurupari.common_data.kafka.event.EnergyUsageEvent;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 

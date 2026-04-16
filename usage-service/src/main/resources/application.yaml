@@ -1,0 +1,62 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: usage-service
+
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVER}:${KAFKA_EXTERNAL_PORT}
+    template:
+      default-topic: energy-alerts
+    consumer:
+      group-id: usage-service
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.type.mapping: energyUsageEvent:com.yurupari.common_data.kafka.event.EnergyUsageEvent
+        spring.json.trusted.packages: com.yurupari.*
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+influx:
+  url: ${INFLUX_HOST}
+  token: ${INFLUXDB_TOKEN}
+  org: ${INFLUXDB_ORG}
+  bucket: ${INFLUXDB_BUCKET}
+
+energy-usage:
+  range-time: 3600
+
+services:
+  device-service:
+    url: ${DEVICE_SERVICE_URL}
+  user-service:
+    url: ${USER_SERVICE_URL}
+
+feign:
+  circuitbreaker:
+    enabled: true
+
+resilience4j:
+  retry:
+    instances:
+      user-service:
+        max-attempts: 3
+        wait-duration: 100ms
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2
+        retry-exceptions:
+          - feign.FeignException.InternalServerError
+          - java.io.IOException
+          - feign.FeignException.GatewayTimeout
+      device-service:
+        max-attempts: 3
+        wait-duration: 100ms
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2
+        retry-exceptions:
+          - feign.FeignException.InternalServerError
+          - java.io.IOException
+          - feign.FeignException.GatewayTimeout

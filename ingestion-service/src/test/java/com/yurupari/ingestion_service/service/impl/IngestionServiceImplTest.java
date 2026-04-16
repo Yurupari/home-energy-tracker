@@ -3,7 +3,7 @@ package com.yurupari.ingestion_service.service.impl;
 import com.yurupari.ingestion_service.BaseUnitTest;
 import com.yurupari.ingestion_service.model.dto.EnergyUsageDto;
 import com.yurupari.ingestion_service.model.mapper.EnergyUsageMapperImpl;
-import com.yurupari.kafka.event.EnergyUsageEvent;
+import com.yurupari.common_data.kafka.event.EnergyUsageEvent;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
