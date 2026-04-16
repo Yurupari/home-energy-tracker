@@ -1,7 +1,5 @@
 package com.yurupari.alert_service.service.impl;
 
-import com.yurupari.alert_service.model.entity.Alert;
-import com.yurupari.alert_service.repository.AlertRepository;
 import com.yurupari.alert_service.service.EmailService;
 import com.yurupari.common_data.annotation.Loggable;
 import lombok.RequiredArgsConstructor;
@@ -20,38 +18,24 @@ public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender javaMailSender;
 
-    private final AlertRepository alertRepository;
-
     @Value("${email.from}")
     private String emailFrom;
 
     @Override
-    public void sendEmail(
+    public boolean sendEmail(
             String to,
             String subject,
-            String body,
-            Long userId
+            String body
     ) {
         var message = buildMessage(to, subject, body);
 
         try {
             javaMailSender.send(message);
 
-            final var alertSent = Alert.builder()
-                    .sent(true)
-                    .userId(userId)
-                    .build();
-
-            alertRepository.saveAndFlush(alertSent);
+            return true;
         } catch (MailException e) {
             log.error("Failed to send email: to={}", to, e);
-
-            final var alertNotSent = Alert.builder()
-                    .sent(false)
-                    .userId(userId)
-                    .build();
-
-            alertRepository.saveAndFlush(alertNotSent);
+            return false;
         }
     }
 

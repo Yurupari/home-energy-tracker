@@ -1,5 +1,7 @@
 package com.yurupari.alert_service.service.impl;
 
+import com.yurupari.alert_service.model.entity.Alert;
+import com.yurupari.alert_service.repository.AlertRepository;
 import com.yurupari.alert_service.service.AlertService;
 import com.yurupari.alert_service.service.EmailService;
 import com.yurupari.common_data.annotation.Loggable;
@@ -14,6 +16,8 @@ public class AlertServiceImpl implements AlertService {
 
     private final EmailService emailService;
 
+    private final AlertRepository alertRepository;
+
     @Override
     public void energyUsageAlertEvent(AlertingEvent alertingEvent) {
         final var subject = "Energy Usage Alert for User "
@@ -21,11 +25,11 @@ public class AlertServiceImpl implements AlertService {
         final var message = String.format("Alert: %s\nThreshold: %s\nEnergy Consumed: %s",
                 alertingEvent.message(), alertingEvent.threshold(), alertingEvent.energyConsumed());
 
-        emailService.sendEmail(
-                alertingEvent.email(),
-                subject,
-                message,
-                alertingEvent.userId()
-        );
+        final var alertSent = Alert.builder()
+                .sent(emailService.sendEmail(alertingEvent.email(), subject, message))
+                .userId(alertingEvent.userId())
+                .build();
+
+        alertRepository.saveAndFlush(alertSent);
     }
 }
