@@ -25,11 +25,11 @@ public class AlertServiceImpl implements AlertService {
         final var message = String.format("Alert: %s\nThreshold: %s\nEnergy Consumed: %s",
                 alertingEvent.message(), alertingEvent.threshold(), alertingEvent.energyConsumed());
 
-        final var alertSent = Alert.builder()
+        final var alert = Alert.builder()
                 .sent(emailService.sendEmail(alertingEvent.email(), subject, message))
                 .userId(alertingEvent.userId())
                 .build();
 
-        alertRepository.saveAndFlush(alertSent);
+        alertRepository.saveAndFlush(alert);
     }
 }
