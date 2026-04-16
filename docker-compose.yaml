@@ -53,6 +53,22 @@ services:
     depends_on:
       - kafka
 
+  influxdb:
+    image: influxdb:2.8
+    container_name: influxdb
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE
+      - DOCKER_INFLUXDB_INIT_USERNAME
+      - DOCKER_INFLUXDB_INIT_PASSWORD
+      - DOCKER_INFLUXDB_INIT_ORG
+      - DOCKER_INFLUXDB_INIT_BUCKET
+      - DOCKER_INFLUXDB_INIT_RETENTION
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN
+    ports:
+      - "8072:8086"
+    volumes:
+      - ./influxdb_data:/var/lib/influxdb2
+
   user-service:
     build:
       context: .
@@ -106,6 +122,31 @@ services:
     depends_on:
       - kafka
 
+  usage-service:
+    build:
+      context: .
+      dockerfile: ./usage-service/src/main/docker/Dockerfile
+    container_name: usage_service
+    environment:
+      - KAFKA_SERVER
+      - KAFKA_EXTERNAL_PORT
+      - INFLUX_HOST
+      - INFLUXDB_TOKEN
+      - INFLUXDB_ORG
+      - INFLUXDB_BUCKET
+      - DEVICE_SERVICE_URL
+      - USER_SERVICE_URL
+    volumes:
+      - ./logs/:/logs
+    ports:
+      - "8083:8083"
+    depends_on:
+      - kafka
+      - influxdb
+      - user-service
+      - device-service
+
 volumes:
   db-data:
   db-logs:
+  kafka-data:
