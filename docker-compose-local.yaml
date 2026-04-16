@@ -175,7 +175,6 @@ services:
       - kafka
       - postgres
       - mailpit
-      - user-service
 
 volumes:
   db-data:
