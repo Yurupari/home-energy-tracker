@@ -146,6 +146,29 @@ services:
       - user-service
       - device-service
 
+  alert-service:
+    build:
+      context: .
+      dockerfile: ./alert-service/src/main/docker/Dockerfile
+    container_name: alert_service
+    environment:
+      - KAFKA_SERVER=kafka
+      - KAFKA_EXTERNAL_PORT=9092
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=home_energy_tracker
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+    volumes:
+      - ./logs/:/logs
+    ports:
+      - "8084:8084"
+    depends_on:
+      - kafka
+      - postgres
+      - user-service
+
 volumes:
   db-data:
   db-logs:

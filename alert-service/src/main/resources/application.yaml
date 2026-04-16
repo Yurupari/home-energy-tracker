@@ -4,3 +4,13 @@ server:
 spring:
   application:
     name: alert-service
+
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVER}:${KAFKA_EXTERNAL_PORT}
+    consumer:
+      group-id: alert-service
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.type.mapping: energyUsageEvent:com.yurupari.common_data.kafka.event.AlertingEvent
+        spring.json.trusted.packages: com.yurupari.*
