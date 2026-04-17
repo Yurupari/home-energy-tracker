@@ -1,6 +1,7 @@
 package com.yurupari.usage_service.scheduler;
 
 import com.yurupari.common_data.kafka.event.AlertingEvent;
+import com.yurupari.common_data.model.DeviceConsumption;
 import com.yurupari.usage_service.model.DeviceEnergy;
 import com.yurupari.usage_service.service.DeviceService;
 import com.yurupari.usage_service.service.UsageService;
@@ -58,6 +59,8 @@ public class EnergyUsageScheduler {
                     }
 
                     deviceEnergy.setUserId(deviceDto.userId());
+                    deviceEnergy.setDeviceName(deviceDto.name());
+                    deviceEnergy.setDeviceLocation(deviceDto.location());
 
                     return deviceEnergy;
                 })
@@ -86,8 +89,13 @@ public class EnergyUsageScheduler {
                 log.info("User has exceeded the energy threshold: userId={}, total_consumption={}, threshold={}",
                         user.id(), totalConsumption, threshold);
 
+                var listDeviceConsumption = devices.stream()
+                        .map(this::buildDeviceConsumption)
+                        .toList();
+
                 final var alertingEvent = AlertingEvent.builder()
                         .userId(user.id())
+                        .devices(listDeviceConsumption)
                         .message("Energy consumption threshold exceeded")
                         .threshold(threshold)
                         .energyConsumed(totalConsumption)
@@ -106,5 +114,13 @@ public class EnergyUsageScheduler {
                         user.id(), totalConsumption, threshold);
             }
         });
+    }
+
+    private DeviceConsumption buildDeviceConsumption(DeviceEnergy deviceEnergy) {
+        return DeviceConsumption.builder()
+                .name(deviceEnergy.getDeviceName())
+                .location(deviceEnergy.getDeviceLocation())
+                .energyConsumed(deviceEnergy.getEnergyConsumed())
+                .build();
     }
 }
