@@ -167,6 +167,9 @@ services:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
       - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+      - MAIL_HOST=mailpit
+      - MAIL_PORT=1025
+      - USER_SERVICE_URL=http://user-service:8080
     volumes:
       - ./logs/:/logs
     ports:
@@ -175,6 +178,7 @@ services:
       - kafka
       - postgres
       - mailpit
+      - user-service
 
 volumes:
   db-data:

@@ -1,5 +1,7 @@
 package com.yurupari.alert_service;
 
+import com.yurupari.alert_service.client.UserFeignClientV1;
+import com.yurupari.alert_service.model.dto.UserDto;
 import com.yurupari.alert_service.repository.AlertRepository;
 import com.yurupari.alert_service.utils.JsonTestUtils;
 import com.yurupari.common_data.kafka.event.AlertingEvent;
@@ -19,10 +21,12 @@ import java.io.IOException;
 import java.time.Duration;
 
 import static com.yurupari.alert_service.constants.TestConstants.ALERTING_EVENT_JSON;
+import static com.yurupari.alert_service.constants.TestConstants.USER_WITH_ALERTING_JSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -40,6 +44,9 @@ class AlertServiceApplicationTests {
 	private JsonTestUtils jsonTestUtils;
 
 	@MockitoBean
+	private UserFeignClientV1 userFeignClientV1;
+
+	@MockitoBean
 	private JavaMailSender javaMailSender;
 
 	@Test
@@ -49,11 +56,14 @@ class AlertServiceApplicationTests {
 	@Test
 	void consumeAlertingEvent_EmailSent() throws IOException {
 		var alertingEvent = jsonTestUtils.loadObject(ALERTING_EVENT_JSON, AlertingEvent.class);
+		var userDto = jsonTestUtils.loadObject(USER_WITH_ALERTING_JSON, UserDto.class);
+
+		when(userFeignClientV1.getUserById(any())).thenReturn(userDto);
 
 		kafkaTemplate.send("energy-alerts", alertingEvent);
 
 		Awaitility.await()
-				.atMost(Duration.ofSeconds(5))
+				.atMost(Duration.ofSeconds(10))
 				.untilAsserted(() -> {
 					verify(javaMailSender).send(any(SimpleMailMessage.class));
 

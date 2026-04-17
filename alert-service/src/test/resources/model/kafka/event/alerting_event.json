@@ -1,5 +1,17 @@
 {
   "userId": 1,
+  "devices": [
+    {
+      "name": "TV",
+      "location": "Living Room",
+      "energyConsumed": 0.030
+    },
+    {
+      "name": "Lamp",
+      "location": "Living Room",
+      "energyConsumed": 0.020
+    }
+  ],
   "message": "Energy consumption threshold exceeded",
   "threshold": 0.033,
   "energyConsumed": 0.050,

@@ -13,7 +13,7 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   datasource:
-    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;INIT=CREATE SCHEMA IF NOT EXISTS home_energy_tracker
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -37,3 +37,7 @@ spring:
 
 email:
   from: noreply@yurupari.com
+
+services:
+  user-service:
+    url: http://localhost:8081
