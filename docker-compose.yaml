@@ -69,6 +69,13 @@ services:
     volumes:
       - ./influxdb_data:/var/lib/influxdb2
 
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: mailpit
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
   user-service:
     build:
       context: .
@@ -145,6 +152,33 @@ services:
       - influxdb
       - user-service
       - device-service
+
+  alert-service:
+    build:
+      context: .
+      dockerfile: ./alert-service/src/main/docker/Dockerfile
+    container_name: alert_service
+    environment:
+      - KAFKA_SERVER
+      - KAFKA_EXTERNAL_PORT
+      - POSTGRES_HOST
+      - POSTGRES_PORT
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - SPRING_JPA_HIBERNATE_DDL_AUTO
+      - MAIL_HOST
+      - MAIL_PORT
+      - USER_SERVICE_URL
+    volumes:
+      - ./logs/:/logs
+    ports:
+      - "8084:8084"
+    depends_on:
+      - kafka
+      - postgres
+      - mailpit
+      - user-service
 
 volumes:
   db-data:
