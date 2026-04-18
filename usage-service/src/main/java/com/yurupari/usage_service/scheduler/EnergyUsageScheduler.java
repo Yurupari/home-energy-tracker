@@ -6,7 +6,6 @@ import com.yurupari.usage_service.model.DeviceEnergy;
 import com.yurupari.usage_service.service.DeviceService;
 import com.yurupari.usage_service.service.UsageService;
 import com.yurupari.usage_service.service.UserService;
-import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
