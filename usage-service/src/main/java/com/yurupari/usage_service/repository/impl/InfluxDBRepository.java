@@ -1,25 +1,21 @@
-package com.yurupari.usage_service.service.impl;
+package com.yurupari.usage_service.repository.impl;
 
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
 import com.influxdb.query.FluxTable;
-import com.yurupari.common_data.annotation.Loggable;
 import com.yurupari.common_data.kafka.event.EnergyUsageEvent;
-import com.yurupari.usage_service.model.DeviceEnergy;
-import com.yurupari.usage_service.service.UsageService;
+import com.yurupari.usage_service.repository.TimeSeriesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Repository
 @RequiredArgsConstructor
-@Loggable
-public class UsageServiceImpl implements UsageService {
+public class InfluxDBRepository implements TimeSeriesRepository {
 
     private final InfluxDBClient influxDBClient;
 
@@ -30,7 +26,7 @@ public class UsageServiceImpl implements UsageService {
     private String influxOrg;
 
     @Override
-    public void energyUsageEvent(EnergyUsageEvent energyUsageEvent) {
+    public void saveUsageEnergy(EnergyUsageEvent energyUsageEvent) {
         var point = Point.measurement("energy_usage")
                 .addTag("deviceId", String.valueOf(energyUsageEvent.deviceId()))
                 .addField("energyConsumed", energyUsageEvent.energyConsumed())
@@ -40,30 +36,7 @@ public class UsageServiceImpl implements UsageService {
     }
 
     @Override
-    public List<DeviceEnergy> getUsageEnergy(Instant from, Instant to) {
-        var fluxTables = getFluxTables(from, to);
-
-        List<DeviceEnergy> deviceEnergies = new ArrayList<>();
-
-        for (var table : fluxTables) {
-            for (var record : table.getRecords()) {
-                var deviceId = (String) record.getValueByKey("deviceId");
-                var energyConsumed = record.getValueByKey("_value") instanceof Number ?
-                        ((Number) record.getValueByKey("_value")).doubleValue() : 0.0;
-
-                deviceEnergies.add(
-                        DeviceEnergy.builder()
-                                .deviceId(Long.valueOf(deviceId))
-                                .energyConsumed(energyConsumed)
-                                .build()
-                );
-            }
-        }
-
-        return deviceEnergies;
-    }
-
-    private List<FluxTable> getFluxTables(Instant from, Instant to) {
+    public List<FluxTable> getUsageEnergy(Instant from, Instant to) {
         var fluxQuery = String.format(
                 """
                 from(bucket: "%s")
