@@ -1,4 +1,4 @@
-package com.yurupari.usage_service.service.impl;
+package com.yurupari.usage_service.repository.impl;
 
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.QueryApi;
@@ -28,10 +28,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class UsageServiceImplTest extends BaseUnitTest {
+class InfluxDBRepositoryTest extends BaseUnitTest {
 
     @InjectMocks
-    private UsageServiceImpl usageService;
+    private InfluxDBRepository influxDBRepository;
 
     @Mock
     private InfluxDBClient influxDBClient;
@@ -40,18 +40,18 @@ class UsageServiceImplTest extends BaseUnitTest {
 
     @BeforeEach
     void setUp() throws IOException {
-        ReflectionTestUtils.setField(usageService, "influxBucket", "test-bucket");
-        ReflectionTestUtils.setField(usageService, "influxOrg", "test-org");
+        ReflectionTestUtils.setField(influxDBRepository, "influxBucket", "test-bucket");
+        ReflectionTestUtils.setField(influxDBRepository, "influxOrg", "test-org");
 
         energyUsageEvent = jsonTestUtils.loadObject(ENERGY_USAGE_EVENT_JSON, EnergyUsageEvent.class);
     }
 
     @Test
-    void energyUsageEvent() {
+    void saveUsageEnergy() {
         var writeApiBlocking = mock(WriteApiBlocking.class);
         when(influxDBClient.getWriteApiBlocking()).thenReturn(writeApiBlocking);
 
-        assertDoesNotThrow(() -> usageService.energyUsageEvent(energyUsageEvent));
+        assertDoesNotThrow(() -> influxDBRepository.saveUsageEnergy(energyUsageEvent));
 
         var pointCaptor = ArgumentCaptor.forClass(Point.class);
         verify(writeApiBlocking).writePoint(
@@ -81,7 +81,7 @@ class UsageServiceImplTest extends BaseUnitTest {
 
         when(queryApi.query(anyString(), anyString())).thenReturn(List.of(fluxTable));
 
-        var response = usageService.getUsageEnergy(from, to);
+        var response = influxDBRepository.getUsageEnergy(from, to);
 
         assertNotNull(response);
     }
