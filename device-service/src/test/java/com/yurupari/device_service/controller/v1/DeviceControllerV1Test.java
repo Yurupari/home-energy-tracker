@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.yurupari.device_service.constants.TestConstants.CREATE_DEVICE_DTO_V1_JSON;
 import static com.yurupari.device_service.constants.TestConstants.SAVED_DEVICE_DTO_V1_JSON;
@@ -38,7 +39,7 @@ class DeviceControllerV1Test extends BaseUnitTest {
     }
 
     @Test
-    void createDevice() throws IOException {
+    void createDevice() {
         when(deviceService.createDevice(any())).thenReturn(savedDeviceDto);
 
         var response = deviceControllerV1.createDevice(createDeviceDto);
@@ -47,7 +48,7 @@ class DeviceControllerV1Test extends BaseUnitTest {
     }
 
     @Test
-    void getDeviceById() throws IOException {
+    void getDeviceById() {
         when(deviceService.getDeviceById(any())).thenReturn(savedDeviceDto);
 
         var response = deviceControllerV1.getDeviceById(2L);
@@ -56,7 +57,7 @@ class DeviceControllerV1Test extends BaseUnitTest {
     }
 
     @Test
-    void updateDevice() throws IOException {
+    void updateDevice() {
         assertDoesNotThrow(() -> deviceControllerV1.updateDevice(2L, updateDeviceDto));
 
         verify(deviceService, times(1)).updateDevice(any(), any());
@@ -67,5 +68,14 @@ class DeviceControllerV1Test extends BaseUnitTest {
         assertDoesNotThrow(() -> deviceControllerV1.deleteDevice(2L));
 
         verify(deviceService, times(1)).deleteDevice(any());
+    }
+
+    @Test
+    void getAllDevicesByUserId() {
+        when(deviceService.getAllDevicesByUserId(any())).thenReturn(List.of(savedDeviceDto));
+
+        var response = deviceControllerV1.getAllDevicesByUserId(1L);
+
+        assertNotNull(response);
     }
 }
