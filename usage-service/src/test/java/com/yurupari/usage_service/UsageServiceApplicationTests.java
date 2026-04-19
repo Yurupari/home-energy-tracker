@@ -18,6 +18,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.listener.MessageListenerContainer;
@@ -26,6 +27,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.ContainerTestUtils;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -41,8 +43,11 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(properties = "spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}")
+@AutoConfigureMockMvc
 @EmbeddedKafka(partitions = 1, topics = {"energy-usage", "energy-alerts"})
 class UsageServiceApplicationTests {
 
@@ -57,6 +62,9 @@ class UsageServiceApplicationTests {
 
 	@Autowired
 	private JsonTestUtils jsonTestUtils;
+
+	@Autowired
+	private MockMvc mockMvc;
 
 	@MockitoBean
 	private DeviceFeignClientV1 deviceFeignClientV1;
@@ -129,5 +137,24 @@ class UsageServiceApplicationTests {
 				.untilAsserted(() -> {
 					verify(energyUsageScheduler, atLeastOnce()).aggregateDeviceEnergyUsage();
 				});
+	}
+
+	@Test
+	void getXDaysUsageForUser() throws Exception {
+		var queryApi = mock(QueryApi.class);
+		when(influxDBClient.getQueryApi()).thenReturn(queryApi);
+
+		var fluxRecord = new FluxRecord(0);
+		fluxRecord.getValues().put("deviceId", "1");
+		fluxRecord.getValues().put("_value", 0.050);
+
+		var fluxTable = new FluxTable();
+		fluxTable.getRecords().add(fluxRecord);
+
+		when(queryApi.query(anyString(), anyString())).thenReturn(List.of(fluxTable));
+
+		mockMvc.perform(
+				get("/api/v1/usage/1"))
+				.andExpect(status().isOk());
 	}
 }

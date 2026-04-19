@@ -9,4 +9,5 @@ public interface TimeSeriesRepository {
 
     void saveUsageEnergy(EnergyUsageEvent energyUsageEvent);
     List<?> getUsageEnergy(Instant from, Instant to);
+    List<?> getUsageEnergy(List<String> listDeviceId, Instant from, Instant to);
 }

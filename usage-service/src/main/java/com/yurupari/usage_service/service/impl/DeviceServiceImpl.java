@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Loggable
@@ -25,5 +28,11 @@ public class DeviceServiceImpl implements DeviceService {
             log.warn("Device not found: id={}", id);
             return null;
         }
+    }
+
+    @Override
+    public List<DeviceDto> getAllDevicesForUser(Long userId) {
+        return Optional.ofNullable(deviceFeignClientV1.getAllDevicesForUser(userId))
+                .orElse(List.of());
     }
 }
