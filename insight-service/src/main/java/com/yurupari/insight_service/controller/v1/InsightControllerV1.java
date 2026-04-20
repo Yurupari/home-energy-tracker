@@ -26,8 +26,11 @@ public class InsightControllerV1 {
             @ApiResponse(responseCode = "404", description = "User not found")
     })
     @GetMapping("/saving-tips/{userId}")
-    public ResponseEntity<InsightDto> getSavingTips(@PathVariable Long userId) {
-        final var insightDto = insightService.getSavingTips(userId);
+    public ResponseEntity<InsightDto> getSavingTips(
+            @PathVariable Long userId,
+            @RequestParam Integer days
+    ) {
+        final var insightDto = insightService.getSavingTips(userId, days);
         return ResponseEntity.ok(insightDto);
     }
 
@@ -37,7 +40,10 @@ public class InsightControllerV1 {
             @ApiResponse(responseCode = "404", description = "User not found")
     })
     @GetMapping("/overview/{userId}")
-    public ResponseEntity<InsightDto> getOverview(@PathVariable Long userId, @RequestParam Integer days) {
+    public ResponseEntity<InsightDto> getOverview(
+            @PathVariable Long userId,
+            @RequestParam Integer days
+    ) {
         final var insightDto = insightService.getOverview(userId, days);
         return ResponseEntity.ok(insightDto);
     }

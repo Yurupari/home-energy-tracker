@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: insight-service
+  ai:
+    ollama:
+      chat.options.model: deepseek-coder
+      init.pull-model-strategy: never
 
 services:
   usage-service:
