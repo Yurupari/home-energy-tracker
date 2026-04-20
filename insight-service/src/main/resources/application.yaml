@@ -40,3 +40,9 @@ resilience4j:
           - feign.FeignException.InternalServerError
           - java.io.IOException
           - feign.FeignException.GatewayTimeout
+
+prompts:
+  base-path: /templates/prompts/
+  files:
+    saving-tips: saving-tips.txt
+    overview: overview.txt

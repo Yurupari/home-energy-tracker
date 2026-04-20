@@ -4,6 +4,7 @@ import com.yurupari.insight_service.BaseUnitTest;
 import com.yurupari.insight_service.model.dto.UsageDto;
 import com.yurupari.insight_service.model.enums.InsightType;
 import com.yurupari.insight_service.service.LLMChatService;
+import com.yurupari.insight_service.service.PromptService;
 import com.yurupari.insight_service.service.UsageService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -27,6 +28,9 @@ class InsightServiceImplTest extends BaseUnitTest {
     private UsageService usageService;
 
     @Mock
+    private PromptService promptService;
+
+    @Mock
     private LLMChatService llmChatService;
 
     @Test
@@ -34,6 +38,7 @@ class InsightServiceImplTest extends BaseUnitTest {
         var usageDto = jsonTestUtils.loadObject(USAGE_DTO_JSON, UsageDto.class);
 
         when(usageService.getXDaysUsageForUser(any(), anyInt())).thenReturn(usageDto);
+        when(promptService.getPromptTemplate(any())).thenReturn("TEST TEMPLATE: DAYS={{days}}, DEVICES={{devices}}");
         when(llmChatService.getInsights(anyString())).thenReturn("TEST_INSIGHT");
 
         var responseSavingTips = insightService.getInsights(1L, 3, InsightType.SAVING_TIPS);

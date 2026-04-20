@@ -17,7 +17,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.IOException;
-import java.util.Objects;
 
 import static com.yurupari.insight_service.constants.TestConstants.USAGE_DTO_JSON;
 import static org.mockito.ArgumentMatchers.any;

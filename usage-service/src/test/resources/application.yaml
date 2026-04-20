@@ -25,4 +25,4 @@ services:
   device-service:
     url: http://localhost:8081
   user-service:
-    url: http://localhost:8081
+    url: http://localhost:8080
