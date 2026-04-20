@@ -180,6 +180,20 @@ services:
       - mailpit
       - user-service
 
+  insight-service:
+    build:
+      context: .
+      dockerfile: ./insight-service/src/main/docker/Dockerfile
+    container_name: insight_service
+    environment:
+      - USAGE_SERVICE_URL=http://usage-service:8084
+    volumes:
+      - ./logs/:/logs
+    ports:
+      - "8085:8085"
+    depends_on:
+      - usage-service
+
 volumes:
   db-data:
   db-logs:

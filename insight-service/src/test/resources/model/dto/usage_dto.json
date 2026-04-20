@@ -1,0 +1,13 @@
+{
+  "userId": 1,
+  "devices": [
+    {
+      "id": 1,
+      "name": "Living Room Lamp",
+      "type": "LIGHT",
+      "location": "Living Room",
+      "userId": 1,
+      "energyConsumed": 0.050
+    }
+  ]
+}

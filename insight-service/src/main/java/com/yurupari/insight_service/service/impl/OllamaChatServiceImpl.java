@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class OllamaChatService implements LLMChatService {
+public class OllamaChatServiceImpl implements LLMChatService {
 
     private final OllamaChatModel ollamaChatModel;
 
