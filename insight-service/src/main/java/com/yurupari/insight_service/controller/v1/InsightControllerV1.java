@@ -1,6 +1,7 @@
 package com.yurupari.insight_service.controller.v1;
 
 import com.yurupari.insight_service.model.dto.InsightDto;
+import com.yurupari.insight_service.model.enums.InsightType;
 import com.yurupari.insight_service.service.InsightService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -30,7 +31,7 @@ public class InsightControllerV1 {
             @PathVariable Long userId,
             @RequestParam Integer days
     ) {
-        final var insightDto = insightService.getSavingTips(userId, days);
+        final var insightDto = insightService.getInsights(userId, days, InsightType.SAVING_TIPS);
         return ResponseEntity.ok(insightDto);
     }
 
@@ -44,7 +45,7 @@ public class InsightControllerV1 {
             @PathVariable Long userId,
             @RequestParam Integer days
     ) {
-        final var insightDto = insightService.getOverview(userId, days);
+        final var insightDto = insightService.getInsights(userId, days, InsightType.OVERVIEW);
         return ResponseEntity.ok(insightDto);
     }
 }

@@ -3,6 +3,7 @@ package com.yurupari.insight_service.service.impl;
 import com.yurupari.common_data.annotation.Loggable;
 import com.yurupari.insight_service.model.dto.DeviceDto;
 import com.yurupari.insight_service.model.dto.InsightDto;
+import com.yurupari.insight_service.model.enums.InsightType;
 import com.yurupari.insight_service.service.InsightService;
 import com.yurupari.insight_service.service.LLMChatService;
 import com.yurupari.insight_service.service.UsageService;
@@ -21,33 +22,19 @@ public class InsightServiceImpl implements InsightService {
     private final LLMChatService llmChatService;
 
     @Override
-    public InsightDto getSavingTips(Long userId, int days) {
+    public InsightDto getInsights(Long userId, int days, InsightType insightType) {
         final var usageDto = usageService.getXDaysUsageForUser(userId, days);
 
         var totalUsage = usageDto.devices().stream()
                 .mapToDouble(DeviceDto::energyConsumed)
                 .sum();
 
-        var prompt = buildSavingTipsPrompt(usageDto.devices(), days);
-        var response = llmChatService.getTips(prompt);
-
-        return InsightDto.builder()
-                .userId(userId)
-                .tips(response)
-                .energyUsage(totalUsage)
-                .build();
-    }
-
-    @Override
-    public InsightDto getOverview(Long userId, int days) {
-        final var usageDto = usageService.getXDaysUsageForUser(userId, days);
-
-        var totalUsage = usageDto.devices().stream()
-                .mapToDouble(DeviceDto::energyConsumed)
-                .sum();
-
-        var prompt = buildOverviewPrompt(usageDto.devices(), days);
-        var response = llmChatService.getTips(prompt);
+        String prompt = "";
+        switch (insightType) {
+            case SAVING_TIPS -> prompt = buildSavingTipsPrompt(usageDto.devices(), days);
+            case OVERVIEW -> prompt = buildOverviewPrompt(usageDto.devices(), days);
+        }
+        var response = llmChatService.getInsights(prompt);
 
         return InsightDto.builder()
                 .userId(userId)
