@@ -6,6 +6,7 @@ spring:
     name: insight-service
   ai:
     ollama:
+      base-url: ${OLLAMA_URL}
       chat.options.model: deepseek-coder
       init.pull-model-strategy: never
 

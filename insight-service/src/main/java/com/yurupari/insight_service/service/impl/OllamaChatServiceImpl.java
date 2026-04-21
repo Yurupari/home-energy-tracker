@@ -18,6 +18,7 @@ public class OllamaChatServiceImpl implements LLMChatService {
 
     @Override
     public String getInsights(String prompt) {
+        log.info("Executing prompt in Ollama");
         try {
             var chatResponse = ollamaChatModel.call(
                     Prompt.builder()
