@@ -94,4 +94,11 @@ class DeviceServiceApplicationTests {
 						delete("/api/v1/device/9999"))
 				.andExpect(status().isNotFound());
 	}
+
+	@Test
+	void getAllDevicesByUserId() throws Exception {
+		mockMvc.perform(
+				get("/api/v1/device/user/1"))
+				.andExpect(status().isOk());
+	}
 }

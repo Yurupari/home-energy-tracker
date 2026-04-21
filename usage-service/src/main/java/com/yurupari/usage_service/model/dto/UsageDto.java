@@ -1,0 +1,12 @@
+package com.yurupari.usage_service.model.dto;
+
+import lombok.Builder;
+
+import java.util.List;
+
+@Builder
+public record UsageDto(
+        Long userId,
+        List<DeviceDto> devices
+) {
+}

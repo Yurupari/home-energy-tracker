@@ -7,4 +7,5 @@ public class TestConstants {
     public static final String USER_DTO_JSON = "model/dto/user_dto.json";
     public static final String DEVICE_ENERGY_JSON = "model/device_energy.json";
     public static final String DEVICE_ENERGY_UNDER_THRESHOLD_JSON = "model/device_energy_under_threshold.json";
+    public static final String USAGE_DTO_JSON = "model/dto/usage_dto.json";
 }

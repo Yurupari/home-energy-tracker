@@ -10,6 +10,8 @@ import com.yurupari.device_service.service.DeviceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Loggable
@@ -55,5 +57,12 @@ public class DeviceServiceImpl implements DeviceService {
         existingDevice.setStatus(Status.INACTIVE);
 
         deviceRepository.save(existingDevice);
+    }
+
+    @Override
+    public List<DeviceDto> getAllDevicesByUserId(Long userId) {
+        return deviceRepository.findAllByUserId(userId).stream()
+                .map(deviceMapper::toDto)
+                .toList();
     }
 }

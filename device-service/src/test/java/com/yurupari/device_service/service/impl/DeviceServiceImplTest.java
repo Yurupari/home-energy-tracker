@@ -13,14 +13,17 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import static com.yurupari.device_service.constants.TestConstants.CREATE_DEVICE_DTO_V1_JSON;
 import static com.yurupari.device_service.constants.TestConstants.SAVED_DEVICE_JSON;
 import static com.yurupari.device_service.constants.TestConstants.UPDATE_DEVICE_DTO_V1_JSON;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -48,7 +51,7 @@ class DeviceServiceImplTest extends BaseUnitTest {
     }
 
     @Test
-    void createDevice_Success() throws IOException {
+    void createDevice_Success() {
         when(deviceRepository.save(any())).thenReturn(savedDevice);
 
         var response = deviceService.createDevice(createDeviceDto);
@@ -57,7 +60,7 @@ class DeviceServiceImplTest extends BaseUnitTest {
     }
 
     @Test
-    void getDeviceById_Success() throws IOException {
+    void getDeviceById_Success() {
         when(deviceRepository.findById(any())).thenReturn(Optional.of(savedDevice));
 
         var response = deviceService.getDeviceById(2L);
@@ -66,14 +69,14 @@ class DeviceServiceImplTest extends BaseUnitTest {
     }
 
     @Test
-    void getDeviceById_DeviceNotFound() throws IOException {
+    void getDeviceById_DeviceNotFound() {
         when(deviceRepository.findById(any())).thenReturn(Optional.empty());
 
         assertThrows(DeviceNotFoundException.class, () -> deviceService.getDeviceById(2L));
     }
 
     @Test
-    void updateDevice_Success() throws IOException {
+    void updateDevice_Success() {
         when(deviceRepository.findById(any())).thenReturn(Optional.of(savedDevice));
 
         deviceService.updateDevice(2L, updateDeviceDto);
@@ -82,14 +85,14 @@ class DeviceServiceImplTest extends BaseUnitTest {
     }
 
     @Test
-    void updateDevice_DeviceNotFound() throws IOException {
+    void updateDevice_DeviceNotFound() {
         when(deviceRepository.findById(any())).thenReturn(Optional.empty());
 
         assertThrows(DeviceNotFoundException.class, () -> deviceService.updateDevice(2L, updateDeviceDto));
     }
 
     @Test
-    void deleteDevice_Success() throws IOException {
+    void deleteDevice_Success() {
         when(deviceRepository.findById(any())).thenReturn(Optional.of(savedDevice));
 
         assertDoesNotThrow(() -> deviceService.deleteDevice(2L));
@@ -98,9 +101,19 @@ class DeviceServiceImplTest extends BaseUnitTest {
     }
 
     @Test
-    void deleteDevice_DeviceNotFound() throws IOException {
+    void deleteDevice_DeviceNotFound() {
         when(deviceRepository.findById(any())).thenReturn(Optional.empty());
 
         assertThrows(DeviceNotFoundException.class, () -> deviceService.deleteDevice(2L));
+    }
+
+    @Test
+    void getAllDevicesByUserId_Success() {
+        when(deviceRepository.findAllByUserId(any())).thenReturn(List.of(savedDevice));
+
+        var response = deviceService.getAllDevicesByUserId(1L);
+
+        assertNotNull(response);
+        assertFalse(response.isEmpty());
     }
 }

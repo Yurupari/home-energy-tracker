@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/device")
 @TrackTime
@@ -70,5 +72,15 @@ public class DeviceControllerV1 {
     public ResponseEntity<Void> deleteDevice(@PathVariable Long id) {
         deviceService.deleteDevice(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Get all devices for an user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully devices retrieved")
+    })
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<DeviceDto>> getAllDevicesByUserId(@PathVariable Long userId) {
+        var listDeviceDto = deviceService.getAllDevicesByUserId(userId);
+        return ResponseEntity.ok(listDeviceDto);
     }
 }

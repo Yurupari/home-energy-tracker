@@ -4,3 +4,46 @@ server:
 spring:
   application:
     name: insight-service
+  ai:
+    ollama:
+      base-url: ${OLLAMA_URL}
+      chat.options.model: deepseek-coder
+      init.pull-model-strategy: never
+
+services:
+  usage-service:
+    url: ${USAGE_SERVICE_URL}
+  user-service:
+    url: ${USER_SERVICE_URL}
+
+feign:
+  circuitbreaker:
+    enabled: true
+
+resilience4j:
+  retry:
+    instances:
+      user-service:
+        max-attempts: 3
+        wait-duration: 100ms
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2
+        retry-exceptions:
+          - feign.FeignException.InternalServerError
+          - java.io.IOException
+          - feign.FeignException.GatewayTimeout
+      device-service:
+        max-attempts: 3
+        wait-duration: 100ms
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2
+        retry-exceptions:
+          - feign.FeignException.InternalServerError
+          - java.io.IOException
+          - feign.FeignException.GatewayTimeout
+
+prompts:
+  base-path: /templates/prompts/
+  files:
+    saving-tips: saving-tips.txt
+    overview: overview.txt

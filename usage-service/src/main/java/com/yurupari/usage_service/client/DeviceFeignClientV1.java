@@ -5,6 +5,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
+
 @FeignClient(
         name = "device-service",
         url = "${services.device-service.url}",
@@ -14,4 +16,7 @@ public interface DeviceFeignClientV1 {
 
     @GetMapping("/{deviceId}")
     DeviceDto getDeviceById(@PathVariable("deviceId") Long id);
+
+    @GetMapping("/user/{userId}")
+    List<DeviceDto> getAllDevicesForUser(@PathVariable("userId") Long userId);
 }

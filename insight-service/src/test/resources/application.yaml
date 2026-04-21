@@ -1,0 +1,17 @@
+spring:
+  ai:
+    ollama:
+      chat.options.model: deepseek-coder
+      init.pull-model-strategy: never
+
+services:
+  usage-service:
+    url: http://localhost:9999
+  user-service:
+    url: http://localhost:9999
+
+prompts:
+  base-path: templates/prompts/
+  files:
+    saving-tips: saving-tips.txt
+    overview: overview.txt
