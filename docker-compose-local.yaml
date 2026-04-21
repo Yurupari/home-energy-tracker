@@ -167,7 +167,7 @@ services:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
       - SPRING_JPA_HIBERNATE_DDL_AUTO=none
-      - MAIL_HOST=http://mailpit
+      - MAIL_HOST=mailpit
       - MAIL_PORT=1025
       - USER_SERVICE_URL=http://user-service:8080
     volumes:
@@ -186,7 +186,7 @@ services:
       dockerfile: ./insight-service/src/main/docker/Dockerfile
     container_name: insight_service
     environment:
-      - USAGE_SERVICE_URL=http://usage-service:8084
+      - USAGE_SERVICE_URL=http://usage-service:8083
     volumes:
       - ./logs/:/logs
     ports:

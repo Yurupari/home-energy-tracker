@@ -18,5 +18,5 @@ public interface DeviceFeignClientV1 {
     DeviceDto getDeviceById(@PathVariable("deviceId") Long id);
 
     @GetMapping("/user/{userId}")
-    List<DeviceDto> getAllDevicesForUser(Long userId);
+    List<DeviceDto> getAllDevicesForUser(@PathVariable("userId") Long userId);
 }
