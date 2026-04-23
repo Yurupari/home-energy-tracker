@@ -23,6 +23,6 @@ energy-usage:
 
 services:
   device-service:
-    url: http://localhost:8081
+    url: http://localhost:9999
   user-service:
-    url: http://localhost:8080
+    url: http://localhost:9999
