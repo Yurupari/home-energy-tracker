@@ -1,0 +1,21 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: api-gateway
+
+services:
+  items:
+    user-service:
+      url: ${USER_SERVICE_URL}
+      path: /api/v1/user/**
+    device-service:
+      url: ${DEVICE_SERVICE_URL}
+      path: /api/v1/device/**
+    ingestion-service:
+      url: ${INGESTION_SERVICE_URL}
+      path: /api/v1/ingestion/**
+    insight-service:
+      url: ${INSIGHT_SERVICE_URL}
+      path: /api/v1/insight/**

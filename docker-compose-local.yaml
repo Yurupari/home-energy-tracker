@@ -197,6 +197,21 @@ services:
     depends_on:
       - usage-service
 
+  api-gateway:
+    build:
+      context: .
+      dockerfile: ./api-gateway/src/main/docker/Dockerfile
+    container_name: api-gateway
+    environment:
+      - USER_SERVICE_URL=http://user-service:8080
+      - DEVICE_SERVICE_URL=http://device-service:8081
+      - INGESTION_SERVICE_URL=http://ingestion-service:8082
+      - INSIGHT_SERVICE_URL=http://insight-service:8085
+    volumes:
+      - ./logs/:/logs
+    ports:
+      - "9000:9000"
+
 volumes:
   db-data:
   db-logs:

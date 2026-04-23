@@ -1,0 +1,14 @@
+services:
+  items:
+    user-service:
+      url: http://localhost:9999
+      path: /api/v1/user/**
+    device-service:
+      url: http://localhost:9999
+      path: /api/v1/device/**
+    ingestion-service:
+      url: http://localhost:9999
+      path: /api/v1/ingestion/**
+    insight-service:
+      url: http://localhost:9999
+      path: /api/v1/insight/**
