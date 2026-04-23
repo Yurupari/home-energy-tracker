@@ -8,14 +8,14 @@ spring:
 services:
   items:
     user-service:
-      url: http://localhost:8080
+      url: ${USER_SERVICE_URL}
       path: /api/v1/user/**
     device-service:
-      url: http://localhost:8081
+      url: ${DEVICE_SERVICE_URL}
       path: /api/v1/device/**
     ingestion-service:
-      url: http://localhost:8082
+      url: ${INGESTION_SERVICE_URL}
       path: /api/v1/ingestion/**
     insight-service:
-      url: http://localhost:8085
+      url: ${INSIGHT_SERVICE_URL}
       path: /api/v1/insight/**
