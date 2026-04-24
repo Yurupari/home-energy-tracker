@@ -9,7 +9,6 @@ import org.springframework.web.servlet.function.ServerResponse;
 
 import java.net.URI;
 
-import static com.yurupari.api_gateway.model.enums.GatewayService.FALLBACK_ROUTE;
 import static org.springframework.cloud.gateway.server.mvc.filter.BeforeFilterFunctions.uri;
 import static org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions.route;
 import static org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions.http;
