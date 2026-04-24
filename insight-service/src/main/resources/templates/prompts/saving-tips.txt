@@ -1,4 +1,4 @@
 Analyse the following energy usage data and provide saving tips with actionable insights.
-This data is the aggregate data for the past {{days}} days.
+This data is the aggregate data for the past %s days.
 Usage Data:
-{{usage_data}}
+%s

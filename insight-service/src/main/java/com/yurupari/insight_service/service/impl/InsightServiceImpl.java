@@ -34,10 +34,11 @@ public class InsightServiceImpl implements InsightService {
                 .sum();
 
         var template = promptService.getPromptTemplate(insightType);
-        var response = llmChatService.getInsights(template.formatted(
+        var prompt = template.formatted(
                 days,
                 usageDto.devices()
-        ));
+        );
+        var response = llmChatService.getInsights(prompt);
 
         return InsightDto.builder()
                 .userId(userId)
