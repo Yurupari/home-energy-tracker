@@ -10,7 +10,8 @@ public enum GatewayService {
     USER("user-service"),
     DEVICE("device-service"),
     INGESTION("ingestion-service"),
-    INSIGHT("insight-service");
+    INSIGHT("insight-service"),
+    FALLBACK_ROUTE("fallbackRoute");
 
     private final String name;
 }
