@@ -1,6 +1,6 @@
 package com.yurupari.api_gateway.route;
 
-import com.yurupari.api_gateway.config.GatewayProperties;
+import com.yurupari.api_gateway.config.GatewayConfigProperties;
 import com.yurupari.api_gateway.model.ServiceConfig;
 import com.yurupari.api_gateway.route.factory.GatewayRouteFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +26,7 @@ class InsightServiceRouteTest {
 
     private InsightServiceRoute insightServiceRoute;
 
-    private GatewayProperties properties;
+    private GatewayConfigProperties properties;
 
     @Mock
     private GatewayRouteFactory routeFactory;
@@ -42,7 +42,7 @@ class InsightServiceRouteTest {
                 "Insight service is down"
         ));
 
-        properties = new GatewayProperties(propertyMap);
+        properties = new GatewayConfigProperties(propertyMap);
 
         insightServiceRoute = new InsightServiceRoute(properties, routeFactory);
     }

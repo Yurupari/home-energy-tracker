@@ -76,6 +76,34 @@ services:
       - "8025:8025"
       - "1025:1025"
 
+  keycloak-db:
+    image: postgres:18-alpine
+    container_name: keycloak-postgres
+    environment:
+      - POSTGRES_DB=${KEYCLOAK_DB}
+      - POSTGRES_USER=${KEYCLOAK_DB_USER}
+      - POSTGRES_PASSWORD=${KEYCLOAK_DB_PASSWORD}
+    volumes:
+      - ./volume-data/postgresql_keycloak_data:/var/lib/postgresql
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    command: [ "start-dev", "--import-realm" ]
+    environment:
+      - DB_VENDOR
+      - DB_ADDR
+      - DB_DATABASE
+      - DB_USER
+      - DB_PASSWORD
+      - KEYCLOAK_ADMIN
+      - KEYCLOAK_ADMIN_PASSWORD
+    ports:
+      - "8091:8080"
+    volumes:
+      - ./docker/keycloak/realms/:/opt/keycloak/data/import/
+    depends_on:
+      - keycloak-db
+
   user-service:
     build:
       context: .
@@ -207,12 +235,14 @@ services:
       - DEVICE_SERVICE_URL
       - INGESTION_SERVICE_URL
       - INSIGHT_SERVICE_URL
+      - JWT_SET_URI
+      - ISSUER_URI
     volumes:
       - ./logs/:/logs
     ports:
       - "9000:9000"
-
-
+    depends_on:
+      - keycloak
 
 volumes:
   db-data:

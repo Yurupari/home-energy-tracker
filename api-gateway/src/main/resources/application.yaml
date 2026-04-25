@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: api-gateway
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${ISSUER_URI}
 
 services:
   items:
@@ -60,3 +65,11 @@ resilience4j:
     configs:
       default:
         timeoutDuration: 5s
+
+keycloak:
+  auth:
+    jwt-set-uri: ${JWT_SET_URI}
+
+security:
+  excluded:
+    urls: /actuator/**

@@ -1,6 +1,6 @@
 package com.yurupari.api_gateway.route;
 
-import com.yurupari.api_gateway.config.GatewayProperties;
+import com.yurupari.api_gateway.config.GatewayConfigProperties;
 import com.yurupari.api_gateway.route.factory.GatewayRouteFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +14,7 @@ import static com.yurupari.api_gateway.model.enums.GatewayService.USER;
 @RequiredArgsConstructor
 public class UserServiceRoute {
 
-    private final GatewayProperties properties;
+    private final GatewayConfigProperties properties;
     private final GatewayRouteFactory routeFactory;
 
     @Bean
