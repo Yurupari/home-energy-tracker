@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: "postgres:18-alpine"
+    image: postgres:18-alpine
     container_name: postgres
     restart: always
     environment:
@@ -75,6 +75,34 @@ services:
     ports:
       - "8025:8025"
       - "1025:1025"
+
+  keycloak-db:
+    image: postgres:18-alpine
+    container_name: keycloak-postgres
+    environment:
+      - POSTGRES_DB=keycloak
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ./volume-data/postgresql_keycloak_data:/var/lib/postgresql
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    command: [ "start-dev", "--import-realm" ]
+    environment:
+      - DB_VENDOR=POSTGRESQL
+      - DB_ADDR=postgresql
+      - DB_DATABASE=keycloak
+      - DB_USER=keycloak
+      - DB_PASSWORD=password
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    ports:
+      - "8091:8080"
+    volumes:
+      - ./docker/keycloak/realms/:/opt/keycloak/data/import/
+    depends_on:
+      - keycloak-db
 
   user-service:
     build:
@@ -207,6 +235,8 @@ services:
       - DEVICE_SERVICE_URL=http://device-service:8081
       - INGESTION_SERVICE_URL=http://ingestion-service:8082
       - INSIGHT_SERVICE_URL=http://insight-service:8085
+      - JWT_SET_URI=http://keycloak:8080/realms/het-security-realm/protocol/openid-connect/certs
+      - ISSUER_URI=http://keycloak:8080/realms/het-security-realm
     volumes:
       - ./logs/:/logs
     ports:
