@@ -24,3 +24,11 @@ services:
       circuitBreakerId: insightServiceCircuitBreaker
       fallbackPath: /fallback/insight
       fallbackMessage: Insight service is down
+
+keycloak:
+  auth:
+    jwt-set-uri: http://localhost:9999/jwt-set-uri
+
+security:
+  excluded:
+    urls: /actuator/**

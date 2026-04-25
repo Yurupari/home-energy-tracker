@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import java.util.Map;
 
 @ConfigurationProperties(prefix = "services")
-public record GatewayProperties(
+public record GatewayConfigProperties(
         Map<String, ServiceConfig> items
 ) {
 }
