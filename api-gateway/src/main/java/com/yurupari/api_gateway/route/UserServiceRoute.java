@@ -1,32 +1,42 @@
 package com.yurupari.api_gateway.route;
 
 import com.yurupari.api_gateway.config.GatewayProperties;
+import com.yurupari.api_gateway.route.factory.GatewayRouteFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.function.RequestPredicates;
 import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.function.ServerResponse;
 
 import static com.yurupari.api_gateway.model.enums.GatewayService.USER;
-import static org.springframework.cloud.gateway.server.mvc.filter.BeforeFilterFunctions.uri;
-import static org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions.route;
-import static org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions.http;
 
 @Configuration
 @RequiredArgsConstructor
 public class UserServiceRoute {
 
     private final GatewayProperties properties;
+    private final GatewayRouteFactory routeFactory;
 
     @Bean
     public RouterFunction<ServerResponse> userRoute() {
-        var userServiceId = USER.getName();
-        var userServiceConfig = properties.items().get(userServiceId);
+        var userServiceConfig = properties.items().get(USER.getName());
 
-        return route(userServiceId)
-                .route(RequestPredicates.path(userServiceConfig.path()), http())
-                .before(uri(userServiceConfig.url()))
-                .build();
+        return routeFactory.createServiceRoute(
+                USER.getName(),
+                userServiceConfig.path(),
+                userServiceConfig.url(),
+                userServiceConfig.circuitBreakerId(),
+                userServiceConfig.fallbackPath()
+        );
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> userFallbackRoute() {
+        var userServiceConfig = properties.items().get(USER.getName());
+
+        return routeFactory.createFallbackRoute(
+                userServiceConfig.fallbackMessage(),
+                userServiceConfig.fallbackPath()
+        );
     }
 }

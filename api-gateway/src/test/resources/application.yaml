@@ -3,12 +3,24 @@ services:
     user-service:
       url: http://localhost:9999
       path: /api/v1/user/**
+      circuitBreakerId: userServiceCircuitBreaker
+      fallbackPath: /fallback/user
+      fallbackMessage: User service is down
     device-service:
       url: http://localhost:9999
       path: /api/v1/device/**
+      circuitBreakerId: deviceServiceCircuitBreaker
+      fallbackPath: /fallback/device
+      fallbackMessage: Device service is down
     ingestion-service:
       url: http://localhost:9999
       path: /api/v1/ingestion/**
+      circuitBreakerId: ingestionServiceCircuitBreaker
+      fallbackPath: /fallback/ingestion
+      fallbackMessage: Ingestion service is down
     insight-service:
       url: http://localhost:9999
       path: /api/v1/insight/**
+      circuitBreakerId: insightServiceCircuitBreaker
+      fallbackPath: /fallback/insight
+      fallbackMessage: Insight service is down
