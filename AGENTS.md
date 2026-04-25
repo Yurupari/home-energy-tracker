@@ -3,7 +3,7 @@
 Purpose: Give AI agents the minimal, actionable knowledge to build, run, and inspect the Home Energy Tracker microservices.
 
 Quick plan for agents
-- Bring up infra (PostgreSQL, Kafka, InfluxDB, Mailpit, Kafka UI)
+- Bring up infra (PostgreSQL, Kafka, InfluxDB, Mailpit, Kafka UI, Keycloak)
 - Build or run a single service locally
 - Exercise the ingestion → usage → alert pipeline and verify side-effects
 
@@ -24,8 +24,8 @@ Architecture & key components
 
 Critical integration points & dataflows (explicit)
 - Ingestion → Kafka → Usage → InfluxDB & Alerts → Alerting consumer
-    - Topic `energy-usage`: produced by `ingestion-service` (`ingestion-service/src/main/java/com/yurupari/ingestion_service/service/IngestionService.java`) and consumed by `usage-service` (`usage-service/src/main/java/com/yurupari/usage_service/service/UsageService.java`).
-    - Topic `energy-alerts`: produced by `usage-service` (aggregation/threshold logic) and consumed by `alert-service` (`alert-service/src/main/java/com/yurupari/alert_service/service/AlertService.java`).
+    - Topic `energy-usage`: produced by `ingestion-service` (`ingestion-service/src/main/java/com/yurupari/ingestion_service/service/impl/IngestionServiceImpl.java`) and consumed by `usage-service` (`usage-service/src/main/java/com/yurupari/usage_service/messaging/kafka/EnergyUsageConsumer.java`).
+    - Topic `energy-alerts`: produced by `usage-service` (aggregation/threshold logic) and consumed by `alert-service` (`alert-service/src/main/java/com/yurupari/alert_service/messaging/kafka/AlertingConsumer.java`).
 - InfluxDB usage: `usage-service/src/main/java/com/yurupari/usage_service/config/InfluxDBConfig.java` and writes/queries in `UsageService.java`.
 - PostgreSQL: DB name `home_energy_tracker`, init in `docker/postgres/init.sql`; JDBC URLs appear in services' `src/main/resources/application.yaml`.
 
@@ -36,6 +36,7 @@ Observability & useful endpoints
 - Kafka UI: http://localhost:8070 (inspect topics and messages)
 - Mailpit (SMTP/web): SMTP **1025**, web UI http://localhost:8025 (outgoing email from `alert-service`)
 - InfluxDB (UI/API): http://localhost:8072 (org/bucket/token from `docker-compose.yaml` env vars, e.g. bucket `usage-bucket`)
+- Keycloak: http://localhost:8091 (admin / admin per Compose; realm import under `docker/keycloak/realms/`)
 - Service ports (defaults in `application.yaml`):
     - `user-service` **8080**, `device-service` **8081**, `ingestion-service` **8082**, `usage-service` **8083**, `alert-service` **8084**, `insight-service` **8085**, `api-gateway` **9000**
 
