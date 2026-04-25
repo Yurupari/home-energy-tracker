@@ -9,7 +9,7 @@ Quick plan for agents
 
 Quick start (infra)
 - From repo root: `docker-compose -f docker-compose-local.yaml up -d` (uses `docker-compose-local.yaml`)
-- Stop: `docker compose down`
+- Stop: `docker-compose down`
 - If DB issues occur: remove/recreate volumes or re-run `docker/postgres/init.sql`
 
 Build / run a service
