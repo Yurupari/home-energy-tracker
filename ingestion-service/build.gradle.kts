@@ -1,5 +1,18 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
 	java
+}
+
+version = "0.0.1-SNAPSHOT"
+
+tasks.processResources {
+	filesMatching("**/application.yaml") {
+		filter(
+			mapOf("tokens" to mapOf("version" to project.version.toString())),
+			ReplaceTokens::class.java
+		)
+	}
 }
 
 var mapstructVersion = "1.6.3"
