@@ -41,3 +41,13 @@ email:
 services:
   user-service:
     url: http://localhost:8081
+
+documentation:
+  title: "Alert Service"
+  description: "Alert Service API"
+  version: "1.0.0"
+  contact:
+    url: "http://none"
+  license:
+    name: "none"
+    url: "http://none"
