@@ -1,7 +1,7 @@
-package com.yurupari.usage_service.config;
+package com.yurupari.insight_service.config;
 
 import com.yurupari.common_data.config.OpenApiConfig;
-import com.yurupari.usage_service.BaseUnitTest;
+import com.yurupari.insight_service.BaseUnitTest;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,26 +14,26 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class UsageOpenApiConfigTest extends BaseUnitTest {
+class InsightOpenApiConfigTest extends BaseUnitTest {
 
     @InjectMocks
-    private UsageOpenApiConfig usageOpenApiConfig;
-    
+    private InsightOpenApiConfig insightOpenApiConfig;
+
     @Mock
     private OpenApiConfig openApiConfig;
 
     @BeforeEach
     void setUp() {
-        ReflectionTestUtils.setField(usageOpenApiConfig, "title", "Usage service");
-        ReflectionTestUtils.setField(usageOpenApiConfig, "description", "Usage Service API");
-        ReflectionTestUtils.setField(usageOpenApiConfig, "version", "1.0.0");
+        ReflectionTestUtils.setField(insightOpenApiConfig, "title", "Insight service");
+        ReflectionTestUtils.setField(insightOpenApiConfig, "description", "Insight Service API");
+        ReflectionTestUtils.setField(insightOpenApiConfig, "version", "1.0.0");
     }
 
     @Test
-    void usageServiceApiDocs() {
+    void insightServiceApiDocs() {
         when(openApiConfig.serviceApiDocs(anyString(), anyString(), anyString())).thenReturn(mock(OpenAPI.class));
 
-        var response = usageOpenApiConfig.usageServiceApiDocs();
+        var response = insightOpenApiConfig.insightServiceApiDocs();
 
         assertNotNull(response);
     }
