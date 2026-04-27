@@ -26,8 +26,6 @@ class InsightServiceRouteTest {
 
     private InsightServiceRoute insightServiceRoute;
 
-    private GatewayConfigProperties properties;
-
     @Mock
     private GatewayRouteFactory routeFactory;
 
@@ -39,10 +37,11 @@ class InsightServiceRouteTest {
                 "/api/v1/insight/**",
                 "insightServiceCircuitBreaker",
                 "/fallback/insight",
-                "Insight service is down"
+                "Insight service is down",
+                "/docs/insight-service/v3/api-docs"
         ));
 
-        properties = new GatewayConfigProperties(propertyMap);
+        var properties = new GatewayConfigProperties(propertyMap);
 
         insightServiceRoute = new InsightServiceRoute(properties, routeFactory);
     }
@@ -77,6 +76,22 @@ class InsightServiceRouteTest {
         verify(routeFactory).createFallbackRoute(
                 anyString(),
                 eq("/fallback/insight")
+        );
+    }
+
+    @Test
+    void testInsightServiceApiDocs() {
+        var routerFunction = mock(RouterFunction.class);
+        when(routeFactory.createServiceApiDocs(anyString(), anyString(), anyString())).thenReturn(routerFunction);
+
+        var response = insightServiceRoute.insightServiceApiDocs();
+
+        assertNotNull(response);
+        assertEquals(routerFunction, response);
+        verify(routeFactory).createServiceApiDocs(
+                eq("insight-service"),
+                anyString(),
+                anyString()
         );
     }
 }

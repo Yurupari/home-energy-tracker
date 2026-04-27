@@ -39,4 +39,16 @@ public class InsightServiceRoute {
                 insightServiceConfig.fallbackPath()
         );
     }
+
+    @Bean
+    public RouterFunction<ServerResponse> insightServiceApiDocs() {
+        var serviceId = INSIGHT.getName();
+        var insightServiceConfig = properties.items().get(serviceId);
+
+        return routeFactory.createServiceApiDocs(
+                serviceId,
+                insightServiceConfig.apiDocsPath(),
+                insightServiceConfig.url()
+        );
+    }
 }

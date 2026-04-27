@@ -5,6 +5,7 @@ public record ServiceConfig(
         String path,
         String circuitBreakerId,
         String fallbackPath,
-        String fallbackMessage
+        String fallbackMessage,
+        String apiDocsPath
 ) {
 }

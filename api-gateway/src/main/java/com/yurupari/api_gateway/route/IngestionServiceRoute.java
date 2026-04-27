@@ -39,4 +39,16 @@ public class IngestionServiceRoute {
                 ingestionServiceConfig.fallbackPath()
         );
     }
+
+    @Bean
+    public RouterFunction<ServerResponse> ingestionServiceApiDocs() {
+        var serviceId = INGESTION.getName();
+        var ingestionServiceConfig = properties.items().get(serviceId);
+
+        return routeFactory.createServiceApiDocs(
+                serviceId,
+                ingestionServiceConfig.apiDocsPath(),
+                ingestionServiceConfig.url()
+        );
+    }
 }

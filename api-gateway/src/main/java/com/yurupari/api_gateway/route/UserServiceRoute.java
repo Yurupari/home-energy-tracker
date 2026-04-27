@@ -19,10 +19,11 @@ public class UserServiceRoute {
 
     @Bean
     public RouterFunction<ServerResponse> userRoute() {
-        var userServiceConfig = properties.items().get(USER.getName());
+        var serviceId = USER.getName();
+        var userServiceConfig = properties.items().get(serviceId);
 
         return routeFactory.createServiceRoute(
-                USER.getName(),
+                serviceId,
                 userServiceConfig.path(),
                 userServiceConfig.url(),
                 userServiceConfig.circuitBreakerId(),
@@ -37,6 +38,18 @@ public class UserServiceRoute {
         return routeFactory.createFallbackRoute(
                 userServiceConfig.fallbackMessage(),
                 userServiceConfig.fallbackPath()
+        );
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> userServiceApiDocs() {
+        var serviceId = USER.getName();
+        var userServiceConfig = properties.items().get(serviceId);
+
+        return routeFactory.createServiceApiDocs(
+                serviceId,
+                userServiceConfig.apiDocsPath(),
+                userServiceConfig.url()
         );
     }
 }

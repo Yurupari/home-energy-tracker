@@ -6,24 +6,28 @@ services:
       circuitBreakerId: userServiceCircuitBreaker
       fallbackPath: /fallback/user
       fallbackMessage: User service is down
+      apiDocsPath: /docs/user-service/v3/api-docs
     device-service:
       url: http://localhost:9999
       path: /api/v1/device/**
       circuitBreakerId: deviceServiceCircuitBreaker
       fallbackPath: /fallback/device
       fallbackMessage: Device service is down
+      apiDocsPath: /docs/device-service/v3/api-docs
     ingestion-service:
       url: http://localhost:9999
       path: /api/v1/ingestion/**
       circuitBreakerId: ingestionServiceCircuitBreaker
       fallbackPath: /fallback/ingestion
       fallbackMessage: Ingestion service is down
+      apiDocsPath: /docs/ingestion-service/v3/api-docs
     insight-service:
       url: http://localhost:9999
       path: /api/v1/insight/**
       circuitBreakerId: insightServiceCircuitBreaker
       fallbackPath: /fallback/insight
       fallbackMessage: Insight service is down
+      apiDocsPath: /docs/insight-service/v3/api-docs
 
 keycloak:
   auth:

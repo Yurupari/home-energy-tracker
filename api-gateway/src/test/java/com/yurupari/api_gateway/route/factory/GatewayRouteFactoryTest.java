@@ -35,4 +35,15 @@ class GatewayRouteFactoryTest {
 
         assertNotNull(response);
     }
+
+    @Test
+    void testCreateServiceApiDocs() {
+        var response = routeFactory.createServiceApiDocs(
+                "TEST_SERVICE_ID",
+                "/api/v3/docs",
+                "http://localhost:9999"
+        );
+
+        assertNotNull(response);
+    }
 }

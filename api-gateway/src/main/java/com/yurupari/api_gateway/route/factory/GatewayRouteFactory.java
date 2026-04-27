@@ -10,6 +10,7 @@ import org.springframework.web.servlet.function.ServerResponse;
 import java.net.URI;
 
 import static org.springframework.cloud.gateway.server.mvc.filter.BeforeFilterFunctions.uri;
+import static org.springframework.cloud.gateway.server.mvc.filter.FilterFunctions.setPath;
 import static org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions.route;
 import static org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions.http;
 
@@ -38,6 +39,14 @@ public class GatewayRouteFactory {
                 .route(RequestPredicates.path(fallbackPath),
                         request -> ServerResponse.status(HttpStatus.SERVICE_UNAVAILABLE)
                                 .body(message))
+                .build();
+    }
+
+    public RouterFunction<ServerResponse> createServiceApiDocs(String serviceId, String apiDocsPath, String url) {
+        return route(serviceId + "-api-docs")
+                .route(RequestPredicates.path(apiDocsPath), http())
+                .before(uri(url))
+                .filter(setPath("v3/api-docs"))
                 .build();
     }
 }
