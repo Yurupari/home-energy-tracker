@@ -15,6 +15,7 @@ dependencies {
 	implementation("org.springframework.cloud:spring-cloud-starter-openfeign:${openFeignVersion}")
 	implementation("org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j")
 	implementation("io.github.resilience4j:resilience4j-spring-boot3")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
