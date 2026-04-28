@@ -26,8 +26,6 @@ class UserServiceRouteTest {
 
     private UserServiceRoute userServiceRoute;
 
-    private GatewayConfigProperties properties;
-
     @Mock
     private GatewayRouteFactory routeFactory;
 
@@ -39,10 +37,11 @@ class UserServiceRouteTest {
                 "/api/v1/user/**",
                 "userServiceCircuitBreaker",
                 "/fallback/user",
-                "User service is down"
+                "User service is down",
+                "/docs/user-service/v3/api-docs"
         ));
 
-        properties = new GatewayConfigProperties(propertyMap);
+        var properties = new GatewayConfigProperties(propertyMap);
 
         userServiceRoute = new UserServiceRoute(properties, routeFactory);
     }
@@ -77,6 +76,22 @@ class UserServiceRouteTest {
         verify(routeFactory).createFallbackRoute(
                 anyString(),
                 eq("/fallback/user")
+        );
+    }
+
+    @Test
+    void testUserServiceApiDocs() {
+        var routerFunction = mock(RouterFunction.class);
+        when(routeFactory.createServiceApiDocs(anyString(), anyString(), anyString())).thenReturn(routerFunction);
+
+        var response = userServiceRoute.userServiceApiDocs();
+
+        assertNotNull(response);
+        assertEquals(routerFunction, response);
+        verify(routeFactory).createServiceApiDocs(
+                eq("user-service"),
+                anyString(),
+                anyString()
         );
     }
 }

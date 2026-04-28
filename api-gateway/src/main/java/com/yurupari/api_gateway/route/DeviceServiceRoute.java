@@ -39,4 +39,16 @@ public class DeviceServiceRoute {
                 deviceServiceConfig.fallbackPath()
         );
     }
+
+    @Bean
+    public RouterFunction<ServerResponse> deviceServiceApiDocs() {
+        var serviceId = DEVICE.getName();
+        var deviceServiceConfig = properties.items().get(serviceId);
+
+        return routeFactory.createServiceApiDocs(
+                serviceId,
+                deviceServiceConfig.apiDocsPath(),
+                deviceServiceConfig.url()
+        );
+    }
 }

@@ -26,8 +26,6 @@ class DeviceServiceRouteTest {
 
     private DeviceServiceRoute deviceServiceRoute;
 
-    private GatewayConfigProperties properties;
-
     @Mock
     private GatewayRouteFactory routeFactory;
 
@@ -39,10 +37,11 @@ class DeviceServiceRouteTest {
                 "/api/v1/device/**",
                 "deviceServiceCircuitBreaker",
                 "/fallback/device",
-                "Device service is down"
+                "Device service is down",
+                "/docs/device-service/v3/api-docs"
         ));
 
-        properties = new GatewayConfigProperties(propertyMap);
+        var properties = new GatewayConfigProperties(propertyMap);
 
         deviceServiceRoute = new DeviceServiceRoute(properties, routeFactory);
     }
@@ -77,6 +76,22 @@ class DeviceServiceRouteTest {
         verify(routeFactory).createFallbackRoute(
                 anyString(),
                 eq("/fallback/device")
+        );
+    }
+
+    @Test
+    void testDeviceServiceApiDocs() {
+        var routerFunction = mock(RouterFunction.class);
+        when(routeFactory.createServiceApiDocs(anyString(), anyString(), anyString())).thenReturn(routerFunction);
+
+        var response = deviceServiceRoute.deviceServiceApiDocs();
+
+        assertNotNull(response);
+        assertEquals(routerFunction, response);
+        verify(routeFactory).createServiceApiDocs(
+                eq("device-service"),
+                anyString(),
+                anyString()
         );
     }
 }

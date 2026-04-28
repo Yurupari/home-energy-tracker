@@ -26,8 +26,6 @@ class IngestionServiceRouteTest {
 
     private IngestionServiceRoute ingestionServiceRoute;
 
-    private GatewayConfigProperties properties;
-
     @Mock
     private GatewayRouteFactory routeFactory;
 
@@ -39,10 +37,11 @@ class IngestionServiceRouteTest {
                 "/api/v1/ingestion/**",
                 "ingestionServiceCircuitBreaker",
                 "/fallback/ingestion",
-                "Ingestion service is down"
+                "Ingestion service is down",
+                "/docs/ingestion-service/v3/api-docs"
         ));
 
-        properties = new GatewayConfigProperties(propertyMap);
+        var properties = new GatewayConfigProperties(propertyMap);
 
         ingestionServiceRoute = new IngestionServiceRoute(properties, routeFactory);
     }
@@ -77,6 +76,22 @@ class IngestionServiceRouteTest {
         verify(routeFactory).createFallbackRoute(
                 anyString(),
                 eq("/fallback/ingestion")
+        );
+    }
+
+    @Test
+    void testIngestionServiceApiDocs() {
+        var routerFunction = mock(RouterFunction.class);
+        when(routeFactory.createServiceApiDocs(anyString(), anyString(), anyString())).thenReturn(routerFunction);
+
+        var response = ingestionServiceRoute.ingestionServiceApiDocs();
+
+        assertNotNull(response);
+        assertEquals(routerFunction, response);
+        verify(routeFactory).createServiceApiDocs(
+                eq("ingestion-service"),
+                anyString(),
+                anyString()
         );
     }
 }
