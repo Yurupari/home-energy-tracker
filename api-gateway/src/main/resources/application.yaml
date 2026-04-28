@@ -76,7 +76,7 @@ keycloak:
 
 security:
   excluded:
-    urls: /actuator/**, /swagger-ui.html, /swagger-ui/**, /docs/**, /v3/api-docs/**, /swagger-resources/**, /api-docs/**
+    urls: /actuator/**,/swagger-ui.html,/swagger-ui/**,/docs/**,/v3/api-docs/**,/swagger-resources/**,/api-docs/**
 
 springdoc:
   swagger-ui:
