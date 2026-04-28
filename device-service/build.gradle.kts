@@ -7,6 +7,7 @@ var mapstructVersion = "1.6.3"
 dependencies {
 	implementation(project(":common-data"))
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("io.micrometer:micrometer-registry-prometheus")
 	compileOnly("org.projectlombok:lombok")
 	runtimeOnly("org.postgresql:postgresql")
 	annotationProcessor("org.projectlombok:lombok")
