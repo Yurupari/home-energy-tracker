@@ -34,12 +34,17 @@ spring:
           starttls:
             enable: false
 
+management:
+  health:
+    mail:
+      enabled: false
+
 email:
   from: noreply@yurupari.com
 
 services:
   user-service:
-    url: http://localhost:9999
+    url: http://localhost:8080
 
 documentation:
   title: "Alert Service"
