@@ -44,7 +44,7 @@ email:
 
 services:
   user-service:
-    url: http://localhost:8080
+    url: http://localhost:9999
 
 documentation:
   title: "Alert Service"
