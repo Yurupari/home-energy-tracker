@@ -61,6 +61,18 @@ resilience4j:
           - java.io.IOException
           - feign.FeignException.GatewayTimeout
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: when_authorized
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
 documentation:
   contact:
     url: https://github.com/yurupari

@@ -24,6 +24,18 @@ spring:
       path: /swagger-ui.html
       enabled: true
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: when_authorized
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
 documentation:
   contact:
     url: https://github.com/yurupari
