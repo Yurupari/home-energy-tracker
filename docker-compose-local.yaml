@@ -280,3 +280,4 @@ volumes:
   db-data:
   db-logs:
   kafka-data:
+  grafana-data:
