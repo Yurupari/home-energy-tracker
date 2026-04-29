@@ -1,7 +1,9 @@
 package com.yurupari.user_service.integration;
 
+import com.jayway.jsonpath.JsonPath;
 import com.yurupari.common_data.model.enums.Status;
 import com.yurupari.user_service.repository.UserRepository;
+import com.yurupari.user_service.support.PostgreSQLTestcontainerBase;
 import com.yurupari.user_service.utils.JsonTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Testcontainers(disabledWithoutDocker = true)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
-public class UserServiceIntegrationTest {
+public class UserServiceIntegrationTest extends PostgreSQLTestcontainerBase {
 
     @Autowired
     private MockMvc mockMvc;
@@ -44,13 +46,11 @@ public class UserServiceIntegrationTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        var request = jsonTestUtils.loadRequest(CREATE_USER_DTO_JSON);
+        userRepository.deleteAll();
+    }
 
-        mockMvc.perform(
-                post("/api/v1/user/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(request))
-                .andExpect(status().isCreated());
+    @Test
+    void contextLoads() {
     }
 
     @Test
@@ -73,6 +73,14 @@ public class UserServiceIntegrationTest {
 
     @Test
     void getUser_Success() throws Exception {
+        var request = jsonTestUtils.loadRequest(CREATE_USER_DTO_JSON);
+
+        mockMvc.perform(
+                        post("/api/v1/user/create")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(request))
+                .andExpect(status().isCreated());
+
         mockMvc.perform(
                         get("/api/v1/user/1"))
                 .andExpect(status().isOk())
@@ -93,16 +101,26 @@ public class UserServiceIntegrationTest {
 
     @Test
     void updateUser_Success() throws Exception {
-        var request = jsonTestUtils.loadRequest(UPDATE_USER_DTO_V1_JSON);
+        var request = jsonTestUtils.loadRequest(CREATE_USER_DTO_JSON);
+
+        var response = mockMvc.perform(
+                        post("/api/v1/user/create")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(request))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+
+        long userId = JsonPath.parse(response).read("$.id", Long.class);
+        request = jsonTestUtils.loadRequest(UPDATE_USER_DTO_V1_JSON);
 
         mockMvc.perform(
-                        put("/api/v1/user/1")
+                        put("/api/v1/user/" + userId)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(request))
                 .andExpect(status().isOk())
                 .andExpect(content().string("User updated successfully"));
 
-        var user = userRepository.findById(1L).orElseThrow();
+        var user = userRepository.findById(userId).orElseThrow();
         assertNotNull(user);
         assertEquals("UPDATED_TEST_NAME", user.getName());
         assertEquals("UPDATED_TEST_ADDRESS", user.getAddress());
@@ -121,11 +139,22 @@ public class UserServiceIntegrationTest {
 
     @Test
     void deleteUser_Success() throws Exception {
+        var request = jsonTestUtils.loadRequest(CREATE_USER_DTO_JSON);
+
+        var response = mockMvc.perform(
+                        post("/api/v1/user/create")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(request))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+
+        long userId = JsonPath.parse(response).read("$.id", Long.class);
+
         mockMvc.perform(
-                        delete("/api/v1/user/2"))
+                        delete("/api/v1/user/" + userId))
                 .andExpect(status().isNoContent());
 
-        var user = userRepository.findById(2L).orElseThrow();
+        var user = userRepository.findById(userId).orElseThrow();
         assertNotNull(user);
         assertEquals(Status.INACTIVE, user.getStatus());
     }

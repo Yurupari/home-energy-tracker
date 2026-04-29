@@ -1,8 +1,6 @@
 spring:
-  datasource:
-    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;INIT=CREATE SCHEMA IF NOT EXISTS home_energy_tracker
-  sql:
-    init:
-      mode: always
   flyway:
-    enabled: false
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
