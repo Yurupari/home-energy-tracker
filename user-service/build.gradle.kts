@@ -1,26 +1,14 @@
 plugins {
 	java
-	"java-test-fixtures"
 }
 
 sourceSets {
     create("integTest") {
-		compileClasspath += sourceSets.main.get().output
-		runtimeClasspath += sourceSets.main.get().output
+        java {
+            compileClasspath += main.get().output + test.get().output
+            runtimeClasspath += main.get().output + test.get().output
+        }
     }
-}
-
-configurations {
-	val testConfigs = listOf("Implementation", "RuntimeOnly", "CompileOnly", "AnnotationProcessor")
-
-	testConfigs.forEach { configSuffix ->
-		val testConfig = configurations.findByName("test$configSuffix")
-		val integTestConfig = configurations.findByName("integTest$configSuffix")
-
-		if (testConfig != null && integTestConfig != null) {
-			integTestConfig.extendsFrom(testConfig)
-		}
-	}
 }
 
 var mapstructVersion = "1.6.3"
@@ -46,17 +34,30 @@ dependencies {
 	testAnnotationProcessor("org.projectlombok:lombok")
 	testAnnotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
 
-    "integTestImplementation"(sourceSets.main.get().output)
+	"integTestImplementation"(sourceSets.main.get().output)
+	"integTestImplementation"(sourceSets.test.get().output)
 }
 
-val integrationTest = tasks.register<Test>("integrationTest") {
-    testClassesDirs = sourceSets["integTest"].output.classesDirs
-    classpath = sourceSets["integTest"].runtimeClasspath
-    useJUnitPlatform()
+configurations {
+	getByName("integTestImplementation") {
+		extendsFrom(configurations.testImplementation.get())
+	}
+	getByName("integTestRuntimeOnly") {
+		extendsFrom(configurations.testRuntimeOnly.get())
+	}
+	getByName("integTestCompileOnly") {
+		extendsFrom(configurations.testCompileOnly.get())
+	}
+	getByName("integTestAnnotationProcessor") {
+		extendsFrom(configurations.testAnnotationProcessor.get())
+	}
 }
 
-tasks.check {
-    dependsOn(integrationTest)
+tasks.register<Test>("integTest") {
+	description = "Run integration tests"
+	group = "verification"
+	testClassesDirs = sourceSets.getByName("integTest").output.classesDirs
+	classpath = sourceSets.getByName("integTest").runtimeClasspath
 }
 
 tasks.bootJar {
